@@ -2,7 +2,6 @@ import bodyParser from "body-parser"; // used to parse the form data that you pa
 import express, { Request, Response } from "express";
 import { userRoutes } from "./route/user.route";
 import { createConnection } from "typeorm";
-import { loginRoutes } from "./middleware/auth";
 
 const PORT = process.env.PORT || 8080;
 
@@ -22,7 +21,7 @@ createConnection().then(connection => {
     userRoutes(app, connection);        
 
     // Login
-    loginRoutes(app, connection);
+    // loginRoutes(app, connection);
 
     app.get("/", (req, res) => {
         res.send("Ello");
