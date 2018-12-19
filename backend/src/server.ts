@@ -1,0 +1,38 @@
+import bodyParser from "body-parser"; // used to parse the form data that you pass in the request
+import express, { Request, Response } from "express";
+import { userRoutes } from "./route/user.route";
+import { createConnection } from "typeorm";
+import { loginRoutes } from "./middleware/auth";
+
+const PORT = process.env.PORT || 8080;
+
+createConnection().then(connection => {
+
+    const app = express();
+
+    // support application/json type post data
+    app.use(bodyParser.json());
+
+    // support application/x-www-form-urlencoded post data
+    app.use(bodyParser.urlencoded({
+        extended: false
+    }));
+        
+    // Users
+    userRoutes(app, connection);        
+
+    // Login
+    loginRoutes(app, connection);
+
+    app.get("/", (req, res) => {
+        res.send("Ello");
+    });
+
+    app.post("/login", (req: Request, res: Response) => {
+        
+    });
+
+    app.listen(PORT, () => {
+        console.log("Listening on port " + PORT);
+    });
+}); 
