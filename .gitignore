@@ -1,4 +1,5 @@
 dist/*
+backend/dist/*
 node_modules/
 .node_modules/
 built/*
