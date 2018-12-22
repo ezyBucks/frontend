@@ -6,7 +6,10 @@
     "jsRules": {},
     "rules": {
         "trailing-comma": [ false ],
-        "no-string-literal": false
+        "no-string-literal": false,
+        "arrow-parens": true,
+        "quotemark": false,
+        "no-console": false
     },
     "rulesDirectory": [],
     "no-console": false
