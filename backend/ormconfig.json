@@ -3,16 +3,16 @@
    "host": "localhost",
    "port": 5432,
    "username": "postgres",
-   "password": "root",
-   "database": "postgres",
+   "password": "rootpassword",
+   "database": "ezybucks",
    "synchronize": true,
    "logging": false,
    "entities": [
       "dist/db/entity/**/*.js"
    ],
    "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
+      "entitiesDir": "backend/src/entity",
+      "migrationsDir": "backend/src/migration",
+      "subscribersDir": "backend/src/subscriber"
    }
 }

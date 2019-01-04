@@ -1,18 +1,11 @@
 import bodyParser from "body-parser"; // used to parse the form data that you pass in the request
-import express, {
-    Request,
-    Response
-} from "express";
-import {
-    userRoutes
-} from "./route/user.route";
-import {
-    createConnection
-} from "typeorm";
+import express, { Request, Response } from "express";
+import { createConnection } from "typeorm";
+import { userRoutes } from "./route/user.route";
 
 const PORT = process.env.PORT || 8080;
 
-createConnection().then(connection => {
+createConnection().then((connection) => {
 
     const app = express();
 
@@ -32,7 +25,7 @@ createConnection().then(connection => {
     });
 
     app.post("/login", (req: Request, res: Response) => {
-
+        console.log('Login endpoint hit');
     });
 
     app.listen(PORT, () => {
