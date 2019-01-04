@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node ./src/server.ts",
-    "start": "concurrently \"npm run watch-ts\" \"npm run watch-node\"",
+    "start": "concurrently \"npm:watch-ts\" \"npm:watch-node\"",
     "prod": "npm run build && npm run start",
     "watch-node": "nodemon dist/server.js",
     "watch-ts": "tsc -w"
