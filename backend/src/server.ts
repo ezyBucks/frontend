@@ -3,6 +3,8 @@ import cors from "cors";
 import express, { Request, Response } from "express";
 import { createConnection } from "typeorm";
 import { userRoutes } from "./route/user.route";
+import passport from "passport";
+import * as passportConfig from "./config/passport";
 
 const PORT = process.env.PORT || 8080;
 
@@ -17,6 +19,9 @@ createConnection().then((connection) => {
     app.use(bodyParser.urlencoded({
         extended: false
     }));
+
+    // Setup Auth JWT
+    app.use(passport.initialize());
 
     // support cors for all origins should change later.
     const router = express.Router();
