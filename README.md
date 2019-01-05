@@ -60,4 +60,8 @@ in the other run:
 
 ``` npm run watch-node```
 
+Alternatively you can run. This will run both of the above commands using concurrently. 
+
+``` npm run start ```
+
 This will then compile changes as they are made, and reload the server when the changes are compiled
