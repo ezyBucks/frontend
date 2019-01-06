@@ -1,19 +1,17 @@
+import { NextFunction, Request, Response } from "express";
+import _ from "lodash";
 import passport from "passport";
 import passportLocal from "passport-local";
-import _ from "lodash";
-
-import { default as User } from "../db/entity/user.entity";
-import { Request, Response, NextFunction } from "express";
-
 import { getConnection, Repository } from 'typeorm';
+import { default as User } from "../db/entity/user.entity";
 
 const LocalStrategy = passportLocal.Strategy;
 
-passport.serializeUser<any, any>((user, done) => {
+passport.serializeUser<any, any>((user: User, done: any) => {
   done(undefined, user.id);
 });
 
-passport.deserializeUser(async (id: string, done) => {
+passport.deserializeUser(async (id: string, done: any) => {
 
   const UserRepo = getConnection().getRepository(User);
   const currentUser = await UserRepo.findOne(id);
@@ -24,18 +22,20 @@ passport.deserializeUser(async (id: string, done) => {
 /**
  * Sign in using Email and Password.
  */
-passport.use(new LocalStrategy({ usernameField: "email" }, async (email: string, password: string, done) => {
+passport.use(new LocalStrategy({ usernameField: "email" }, async (email: string, password: string, done: any) => {
 
   const userRepo = getConnection().getRepository(User);
   const currentUser = await userRepo.findOne({ email });
 
-  if (!currentUser) {      
+  console.log("Using the method from passport.ts");
+
+  if (!currentUser) {
       return done(undefined, false, { message: `Email ${email} not found.` });
   }
 
   currentUser.comparePassword(password, (err: Error, isMatch: boolean) => {
-      if (err) { 
-        return done(err); 
+      if (err) {
+        return done(err);
       }
 
       if (isMatch) {

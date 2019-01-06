@@ -1,5 +1,6 @@
 import { Application, Request, Response } from "express";
 import { Connection } from "typeorm";
+import * as passportConfig from "../config/passport";
 import { UserEntity } from "../db/entity/user.entity";
 
 export function userRoutes(app: Application, connection: Connection): void {
@@ -8,6 +9,7 @@ export function userRoutes(app: Application, connection: Connection): void {
 
     app.get(
         "/user",
+        passportConfig.isAuthenticated,
         async (req: Request, res: Response) => {
             const items = await userRepository.find();
             const count = await userRepository.count();
@@ -20,12 +22,14 @@ export function userRoutes(app: Application, connection: Connection): void {
 
     app.get(
         "/user/:id",
+        passportConfig.isAuthenticated,
         async (req: Request, res: Response) => {
             res.send(await userRepository.findOne(req.params.id));
     });
 
     app.post(
         "/user",
+        passportConfig.isAuthenticated,
         async (req: Request, res: Response) => {
             const user = userRepository.create(req.body);
             res.send(await userRepository.save(user));
@@ -33,6 +37,7 @@ export function userRoutes(app: Application, connection: Connection): void {
 
     app.delete(
         "/user/:id",
+        passportConfig.isAuthenticated,
         async (req: Request, res: Response) => {
             const user =  await userRepository.findOne(req.params.id);
             if (user) {

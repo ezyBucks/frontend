@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, AfterLoad} from "typeorm";
-import bcrypt from "bcrypt-nodejs"
+import bcrypt from "bcrypt-nodejs";
+import {  AfterLoad, BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 @Entity()
 export class UserEntity {
 
@@ -21,21 +21,21 @@ export class UserEntity {
     @Column({nullable: true})
     public password: string = "";
 
+    public comparePassword(candidatePassword: string, cb: (err: any, isMatch: boolean) => void) {
+        bcrypt.compare(candidatePassword, this.password, (err: Error, isMatch: boolean) => {
+          cb(err, isMatch);
+        });
+    }
+
     @BeforeInsert()
-    hashPassword() {
+    protected hashPassword() {
         this.password = "";
     }
 
     @AfterLoad()
-    unhashPassword() {
-        this.password = "'bcrypt'"
+    protected unhashPassword() {
+        this.password = "'bcrypt'";
     }
-
-    comparePassword (candidatePassword: string, cb: (err: any, isMatch: boolean) => void) {
-        bcrypt.compare(candidatePassword, this.password, (err: Error, isMatch: boolean) => {
-          cb(err, isMatch);
-        });
-    };
 }
 
 export default UserEntity;

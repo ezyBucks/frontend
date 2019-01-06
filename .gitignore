@@ -1,4 +1,3 @@
-backend/dist/*
 dist/*
 backend/dist/*
 node_modules/

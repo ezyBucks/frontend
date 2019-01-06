@@ -9,7 +9,8 @@
         "arrow-parens": true,
         "quotemark": false,
         "no-string-literal": false,	
-        "no-console": false
+        "no-console": false,
+        "no-shadowed-variable": false
     },
     "rulesDirectory": [],
     "no-console": false
