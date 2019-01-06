@@ -8,7 +8,9 @@
         "trailing-comma": [ false ],
         "arrow-parens": true,
         "quotemark": false,
-        "no-console": false
+        "no-string-literal": false,	
+        "no-console": false,
+        "no-shadowed-variable": false
     },
     "rulesDirectory": [],
     "no-console": false
