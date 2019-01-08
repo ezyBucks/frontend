@@ -11,7 +11,7 @@ import {
 import jwt from "jsonwebtoken";
 
 import passport from "passport";
-import UserEntity from "src/entity/user.entity";
+import UserEntity from "../entity/user.entity";
 
 export function authRoutes(app: Application, connection: Connection): void {
 
@@ -39,8 +39,6 @@ export function authRoutes(app: Application, connection: Connection): void {
                     session: false
                 }, async (error) => {
                     if (error) {
-                        
-                        console.log("Hit error in the passport.ts file");
                         return next(error);
                     }
 
@@ -48,8 +46,6 @@ export function authRoutes(app: Application, connection: Connection): void {
                         id: user.id,
                         email: user.email
                     };
-
-                    console.log(user);
 
                     // sign JWT! need to move this into dotenv!
                     const token = jwt.sign({

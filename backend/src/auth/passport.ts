@@ -20,7 +20,7 @@ const localStrategy = passportLocal.Strategy;
 passport.use('signup', new localStrategy({
   usernameField: 'email',
   passwordField: 'password'
-}, async (email, password, done) => {
+}, async (email: string, password: string, done: any) => {
   try {
     const user = new User();
     user.email = email;
