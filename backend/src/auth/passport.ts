@@ -74,16 +74,16 @@ const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 // This verifies that the token sent by the user is valid
 passport.use(new JWTstrategy({
-  // secret we used to sign our JWT
+  // move to dotenv!
   secretOrKey: 'ezybuccccccs',
-  // we expect the user to send the token as a query paramater with the name 'secret_token'
+  // pull token from header
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
 }, async (token: any, done: any) => {
   try {
     // Pass the user details to the next middleware
     return done(null, token.user);
   } catch (error) {
-    done(error);
+    done({error});
   }
 }));
 

@@ -31,12 +31,20 @@ export function userRoutes(app: Application, connection: Connection): void {
 
     app.get(
         "/user/:id",
+        passport.authenticate('jwt', { session : false }),
         async (req: Request, res: Response) => {
-            res.send(await UserEntity.findOne(req.params.id));
+            const user = await UserEntity.findOne(req.params.id);
+
+            if (!user) {
+                res.send({message: `No user with the ID of ${req.params.id}`});
+            }
+
+            res.send(user);
         });
 
     app.post(
         "/user",
+        passport.authenticate('jwt', { session : false }),
         async (req: Request, res: Response) => {
             const user = UserEntity.create(req.body);
             res.send(await UserEntity.save(user));
@@ -44,6 +52,7 @@ export function userRoutes(app: Application, connection: Connection): void {
 
     app.delete(
         "/user/:id",
+        passport.authenticate('jwt', { session : false }),
         async (req: Request, res: Response) => {
             const user = await UserEntity.findOne(req.params.id);
             if (user) {
