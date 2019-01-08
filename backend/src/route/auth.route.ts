@@ -1,30 +1,68 @@
-import { NextFunction, Request, Response } from "express";
+import {
+    Application,
+    Request,
+    Response
+} from "express";
+
+import {
+    Connection
+} from "typeorm";
+
+import jwt from "jsonwebtoken";
+
 import passport from "passport";
-import { IVerifyOptions } from "passport-local";
-import UserEntity from "../db/entity/user.entity";
+import UserEntity from "src/entity/user.entity";
 
-export let login = (req: Request, res: Response, next: NextFunction) => {
+export function authRoutes(app: Application, connection: Connection): void {
 
-    passport.authenticate(
-        "local",
-        (err: Error, user: UserEntity, info: IVerifyOptions) => {
-        if (err) {
-            return next(err);
+    app.post(
+        "/signup",
+        passport.authenticate("signup", {
+            session: false
+        }),
+        async (req: Request, res: Response) => {
+            res.json({
+                message: "Should be signed up now!",
+                user: req.user
+            });
         }
+    );
 
-        if (!user) {
-            console.log(user);
-            console.log("Failed to find user.");
-            return res.redirect("/login");
-        }
+    app.post('/login', async (req, res, next) => {
+        passport.authenticate('login', async (err: IResponseError, user: UserEntity, info) => {
+            try {
+                if (err || !user) {       
+                    return next({err, user, info});
+                }
 
-        req.logIn(user, (err: Error) => {
-            if (err) {
-                return next(err);
+                req.login(user, {
+                    session: false
+                }, async (error) => {
+                    if (error) {
+                        
+                        console.log("Hit error in the passport.ts file");
+                        return next(error);
+                    }
+
+                    const body = {
+                        id: user.id,
+                        email: user.email
+                    };
+
+                    console.log(user);
+
+                    // sign JWT! need to move this into dotenv!
+                    const token = jwt.sign({
+                        user: body
+                    }, 'ezybuccccccs');
+
+                    return res.json({
+                        token
+                    });
+                });
+            } catch (error) {
+                return next(error);
             }
-            res.redirect("/");
-            console.log("Signed in??");
-        });
-        }
-  )(req, res, next);
-};
+        })(req, res, next);
+    });
+}
