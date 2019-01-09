@@ -4,8 +4,10 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "preinstall": "npm install typescript -g; npm install nodemon -g",
     "build": "tsc",
     "start": "concurrently \"npm:watch-ts\" \"npm:watch-node\"",
+    "prod-pm2": "pm2 start dist/server.js -i 2",
     "prod": "npm run build && npm run start",
     "watch-node": "nodemon dist/server.js",
     "watch-ts": "tsc -w"
@@ -14,13 +16,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
-    "jwt-simple": "^0.5.5",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",
     "passport": "^0.4.0",
@@ -31,7 +32,7 @@
     "typeorm": "^0.2.9"
   },
   "devDependencies": {
-    "@types/bcrypt-nodejs": "0.0.30",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^8.3.0",
     "@types/lodash": "^4.14.119",
     "@types/passport": "^0.4.7",

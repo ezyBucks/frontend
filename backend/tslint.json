@@ -10,7 +10,10 @@
         "quotemark": false,
         "no-string-literal": false,	
         "no-console": false,
-        "no-shadowed-variable": false
+        "no-shadowed-variable": false,
+        "object-literal-sort-keys": false,
+        "no-var-requires": false,
+        "no-trailing-whitespace": false
     },
     "rulesDirectory": [],
     "no-console": false
