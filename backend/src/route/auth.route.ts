@@ -1,64 +1,84 @@
-import {
-    Application,
-    Request,
-    Response
-} from "express";
+import { Application, NextFunction, Request, Response } from "express";
 
-import {
-    Connection
-} from "typeorm";
-
+import { Connection } from "typeorm";
+const { check, validationResult } = require("express-validator/check");
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import secret from "../auth/config";
 import UserEntity from "../entity/user.entity";
 
 export function authRoutes(app: Application, connection: Connection): void {
+  app.post(
+    "/signup",
+    [check("email", "Email is not in correct format").isEmail()],
+    passport.authenticate("signup", {
+      session: false
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      // Respond with the new user details
+      res.json({
+        message: "Should be signed up now!",
+        user: req.user
+      });
+    }
+  );
 
-    app.post(
-        "/signup",
-        passport.authenticate("signup", {
-            session: false
-        }),
-        async (req: Request, res: Response) => {
-            res.json({
-                message: "Should be signed up now!",
-                user: req.user
-            });
-        }
-    );
+  function checkEmailAndPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    req.check("email", "Email is not valid.").isEmail();
 
-    app.post('/login', async (req, res, next) => {
-        passport.authenticate('login', async (err: IResponseError, user: UserEntity, info) => {
-            try {
-                if (err || !user) {       
-                    return next({err, user, info});
-                }
+    // password must be at least 5 chars long
+    req.check("password").isLength({ min: 5 });
 
-                req.login(user, {
-                    session: false
-                }, async (error) => {
-                    if (error) {
-                        return next(error);
-                    }
+    console.log(req);
 
-                    const body = {
-                        id: user.id,
-                        email: user.email
-                    };
+    next();
+  }
 
-                    // sign JWT! need to move this into dotenv!
-                    const token = jwt.sign({
-                        user: body
-                    }, secret);
+  app.post("/login", async (req, res, next) => {
+    passport.authenticate(
+      "login",
+      async (err: IResponseError, user: UserEntity, info) => {
+        try {
+          if (err || !user) {
+            return next({ err, user, info });
+          }
 
-                    return res.json({
-                        token
-                    });
-                });
-            } catch (error) {
+          req.login(
+            user,
+            {
+              session: false
+            },
+            async (error) => {
+              if (error) {
                 return next(error);
+              }
+
+              const body = {
+                id: user.id,
+                email: user.email
+              };
+
+              // sign JWT! need to move this into dotenv!
+              const token = jwt.sign(
+                {
+                  user: body
+                },
+                secret
+              );
+
+              return res.json({
+                token
+              });
             }
-        })(req, res, next);
-    });
+          );
+        } catch (error) {
+          return next(error);
+        }
+      }
+    )(req, res, next);
+  });
 }

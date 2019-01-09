@@ -1,24 +1,17 @@
 import bodyParser from "body-parser"; // used to parse the form data that you pass in the request
 import cors from "cors";
-import express, {
-  NextFunction,
-  Request,
-  Response
-} from "express";
+import express, { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import {
-  Connection,
-  createConnection
-} from "typeorm";
+import { Connection, createConnection } from "typeorm";
 import { authRoutes } from "./route/auth.route";
-import {
-  userRoutes
-} from "./route/user.route";
+import { userRoutes } from "./route/user.route";
+
+import expressValidator from "express-validator";
 
 const PORT = process.env.PORT || 8080;
 
-createConnection().then(
-  (connection: Connection) => {
+createConnection()
+  .then((connection: Connection) => {
     // Hacks as well need to wait for the DB connection to be established.
     require("./auth/passport");
 
@@ -26,6 +19,9 @@ createConnection().then(
 
     // support application/json type post data
     app.use(bodyParser.json());
+
+    // support for express-validator
+    app.use(expressValidator());
 
     // support application/x-www-form-urlencoded post data -- We can probs remove this if we only want JSON
     app.use(
@@ -67,18 +63,28 @@ createConnection().then(
       res.send("Should not be able to see");
     });
 
-    // probs remove -- Trying to make a catch all error handler.
-    app.use((err: IResponseError, req: Request, res: Response, next: NextFunction) => {
-      res.status(err.status || 500);
-      res.json({
-        error: err
-      });
-    });
+    app.use(
+      (
+        err: IResponseError,
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ) => {
+        res.status(err.status || 500);
+        res.json({
+          error: err,
+          custom : "Lol you broke it"
+        });
+      }
+    );
 
     app.listen(PORT, () => {
       console.log("Listening on port " + PORT);
     });
-  }
-).catch((reason: any) => {
-  console.log({reason, message: "TypeORM Failed to get connection to DB probs"});
-});
+  })
+  .catch((reason: any) => {
+    console.log({
+      reason,
+      message: "TypeORM Failed to get connection to DB probs"
+    });
+  });
