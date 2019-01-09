@@ -1,39 +1,43 @@
 import * as React from "react";
-import { ControlledInput } from "../Misc/ControlledInput";
+import { ControlledInput } from "../../Misc/ControlledInput";
 import { Icon, Button } from "antd";
 
-interface LoginViewProps {
+interface RegisterViewProps {
   /** Function to handle changes of both user inputs in the view */
   onChange: (e: React.SyntheticEvent) => void;
   /** Function to handle submitting the login */
   submit: (e: React.SyntheticEvent) => void;
 }
 
-/**
- * Class to render the view for the login page. This is a Stateless Function Component as it should not have any state, and does not need the lifecycle methods,
- * which should help performance
- */
-export const LoginView: React.SFC<LoginViewProps> = props => {
+export const RegisterView: React.SFC<RegisterViewProps> = props => {
   return (
     <form onSubmit={props.submit}>
       <div>
         <ControlledInput
           onChange={props.onChange}
           prefix={<Icon type="user" />}
-          placeholder="Enter your username"
+          placeholder="Enter a username"
           id="username"
         />
       </div>
       <div>
         <ControlledInput
           onChange={props.onChange}
-          placeholder="Please enter your password"
+          placeholder="Please enter a password"
           type="password"
           id="password"
         />
       </div>
+      <div>
+        <ControlledInput
+          onChange={props.onChange}
+          placeholder="Please reenter the password"
+          type="password"
+          id="repassword"
+        />
+      </div>
       <Button htmlType="submit" type="primary" onClick={props.submit}>
-        Login
+        Register
       </Button>
     </form>
   );
