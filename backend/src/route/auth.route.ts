@@ -9,8 +9,8 @@ import {
 } from "typeorm";
 
 import jwt from "jsonwebtoken";
-
 import passport from "passport";
+import secret from "../auth/config";
 import UserEntity from "../entity/user.entity";
 
 export function authRoutes(app: Application, connection: Connection): void {
@@ -50,7 +50,7 @@ export function authRoutes(app: Application, connection: Connection): void {
                     // sign JWT! need to move this into dotenv!
                     const token = jwt.sign({
                         user: body
-                    }, 'ezybuccccccs');
+                    }, secret);
 
                     return res.json({
                         token

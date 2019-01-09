@@ -79,4 +79,6 @@ createConnection().then(
       console.log("Listening on port " + PORT);
     });
   }
-);
+).catch((reason: any) => {
+  console.log({reason, message: "TypeORM Failed to get connection to DB probs"});
+});
