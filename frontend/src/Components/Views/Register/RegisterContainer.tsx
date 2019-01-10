@@ -1,8 +1,9 @@
 import * as React from "react";
 import { RegisterView } from "./RegisterView";
+import { makeRequest } from "../../../lib/fetch";
 
 interface RegisterContainerState {
-  username: string;
+  email: string;
   password: string;
   repassword: string;
 }
@@ -27,8 +28,8 @@ export class RegisterContainer extends React.Component<
     const id = e.currentTarget.id;
     const value = e.currentTarget.value || "";
     switch (id) {
-      case "username":
-        this.setState({ username: value });
+      case "email":
+        this.setState({ email: value });
         break;
       case "password":
         this.setState({ password: value });
@@ -48,6 +49,7 @@ export class RegisterContainer extends React.Component<
     e.preventDefault();
     console.log("POST to the api");
     console.log(this.state);
+    makeRequest('http://localhost:8080/signup', 'POST', this.state);
   }
 
   public render() {

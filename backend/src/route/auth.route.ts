@@ -12,11 +12,13 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 import secret from "../auth/config";
 import UserEntity from "../entity/user.entity";
+import cors = require("cors");
 
 export function authRoutes(app: Application, connection: Connection): void {
 
     app.post(
         "/signup",
+        cors(),
         passport.authenticate("signup", {
             session: false
         }),

@@ -1,24 +1,15 @@
 import bodyParser from "body-parser"; // used to parse the form data that you pass in the request
 import cors from "cors";
-import express, {
-  NextFunction,
-  Request,
-  Response
-} from "express";
+import express, { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import {
-  Connection,
-  createConnection
-} from "typeorm";
+import { Connection, createConnection } from "typeorm";
 import { authRoutes } from "./route/auth.route";
-import {
-  userRoutes
-} from "./route/user.route";
+import { userRoutes } from "./route/user.route";
 
 const PORT = process.env.PORT || 8080;
 
-createConnection().then(
-  (connection: Connection) => {
+createConnection()
+  .then((connection: Connection) => {
     // Hacks as well need to wait for the DB connection to be established.
     require("./auth/passport");
 
@@ -56,8 +47,14 @@ createConnection().then(
     };
 
     // add cors support probs need to limit this to our domains
-    router.use(cors(options));
-    router.options("*", cors(options));
+    // router.use(cors());
+    // router.options("*", cors());
+    app.use(cors());
+    app.use((req, res, next)=>{
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
 
     // Users routes.
     userRoutes(app, connection);
@@ -68,17 +65,27 @@ createConnection().then(
     });
 
     // probs remove -- Trying to make a catch all error handler.
-    app.use((err: IResponseError, req: Request, res: Response, next: NextFunction) => {
-      res.status(err.status || 500);
-      res.json({
-        error: err
-      });
-    });
+    app.use(
+      (
+        err: IResponseError,
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ) => {
+        res.status(err.status || 500);
+        res.json({
+          error: err
+        });
+      }
+    );
 
     app.listen(PORT, () => {
       console.log("Listening on port " + PORT);
     });
-  }
-).catch((reason: any) => {
-  console.log({reason, message: "TypeORM Failed to get connection to DB probs"});
-});
+  })
+  .catch((reason: any) => {
+    console.log({
+      reason,
+      message: "TypeORM Failed to get connection to DB probs"
+    });
+  });

@@ -5,8 +5,9 @@ import { Button } from "antd";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { LoginContainer } from "./Components/Views/Login/LoginContainer";
 import { RegisterContainer } from "./Components/Views/Register/RegisterContainer";
+import { makeRequest } from "./lib/fetch";
 
-const index = () => <div>This is the index page</div>;
+const index = () => <div><button onClick={()=>{makeRequest('http://localhost:8080')}}>This is the index page</button></div>;
 
 class App extends Component {
   render() {

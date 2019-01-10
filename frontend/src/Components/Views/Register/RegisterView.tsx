@@ -16,8 +16,8 @@ export const RegisterView: React.SFC<RegisterViewProps> = props => {
         <ControlledInput
           onChange={props.onChange}
           prefix={<Icon type="user" />}
-          placeholder="Enter a username"
-          id="username"
+          placeholder="Enter an email address"
+          id="email"
         />
       </div>
       <div>
