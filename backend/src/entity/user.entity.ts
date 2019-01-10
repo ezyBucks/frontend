@@ -8,24 +8,31 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
+import { IsEmail, IsString, Min } from "class-validator";
+
 // http://typeorm.io/#/active-record-data-mapper using active record style.
 @Entity()
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id?: number;
 
+  @IsString()
   @Column({ nullable: true })
   public firstname: string = "";
 
+  @IsString()
   @Column({ nullable: true })
   public lastname: string = "";
 
+  @IsEmail()
   @Column({ nullable: true })
   public email: string = "";
 
+  @IsString()
   @Column({ nullable: true })
   public username: string = "";
 
+  @Min(5)
   @Column({ nullable: true })
   public password: string = "";
 
