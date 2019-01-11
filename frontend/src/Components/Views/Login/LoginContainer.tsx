@@ -1,8 +1,9 @@
 import * as React from "react";
 import { LoginView } from "./LoginView";
+import { makeRequest } from "../../../lib/fetch";
 
 interface LoginContainerState {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -26,8 +27,8 @@ export class LoginContainer extends React.Component<{}, LoginContainerState> {
     const id = e.currentTarget.id;
     const value = e.currentTarget.value || "";
     switch (id) {
-      case "username":
-        this.setState({ username: value });
+      case "email":
+        this.setState({ email: value });
         break;
       case "password":
         this.setState({ password: value });
@@ -40,10 +41,18 @@ export class LoginContainer extends React.Component<{}, LoginContainerState> {
    *
    * @param e Event passed from the onSubmit event
    */
-  private handleLogin(e: React.SyntheticEvent<any>) {
+  private async handleLogin(e: React.SyntheticEvent<any>) {
     e.preventDefault();
     console.log("POST to the api");
     console.log(this.state);
+    const response = await makeRequest(
+      "http://localhost:8080/login",
+      "POST",
+      this.state
+    );
+    const result = await response.json();
+    console.log(result);
+    localStorage.setItem("token", result.token);
   }
 
   public render() {

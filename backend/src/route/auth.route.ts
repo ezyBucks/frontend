@@ -8,11 +8,11 @@ import {
     Connection
 } from "typeorm";
 
+import cors = require("cors");
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import secret from "../auth/config";
 import UserEntity from "../entity/user.entity";
-import cors = require("cors");
 
 export function authRoutes(app: Application, connection: Connection): void {
 

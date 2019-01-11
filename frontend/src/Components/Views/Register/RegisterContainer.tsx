@@ -47,8 +47,6 @@ export class RegisterContainer extends React.Component<
    */
   private handleRegister(e: React.SyntheticEvent<any>) {
     e.preventDefault();
-    console.log("POST to the api");
-    console.log(this.state);
     makeRequest('http://localhost:8080/signup', 'POST', this.state);
   }
 

@@ -1,9 +1,18 @@
 export async function makeRequest(url: string, method = "GET", data = {}) {
-  let result = await fetch(url, {
+  const token = localStorage.getItem("token");
+  const fetchOptions: RequestInit = {
     method,
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(data)
-  });
-  let jsonResult = await result.text();
-  console.log(result, jsonResult);
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+  if (method.toUpperCase() === "POST") {
+    fetchOptions.headers = {
+      ...fetchOptions.headers,
+      "Content-Type": "application/json"
+    };
+    fetchOptions.body = JSON.stringify(data);
+  }
+  let result = await fetch(url, fetchOptions);
+  return result;
 }

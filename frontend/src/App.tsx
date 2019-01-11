@@ -7,7 +7,27 @@ import { LoginContainer } from "./Components/Views/Login/LoginContainer";
 import { RegisterContainer } from "./Components/Views/Register/RegisterContainer";
 import { makeRequest } from "./lib/fetch";
 
-const index = () => <div><button onClick={()=>{makeRequest('http://localhost:8080')}}>This is the index page</button></div>;
+const index = () => (
+  <div>
+    <button
+      onClick={async () => {
+        let result = await makeRequest("http://localhost:8080");
+        console.log(await result.text());
+      }}
+    >
+      This is the index page
+    </button>
+    <button
+      onClick={async () => {
+        let response = await makeRequest("http://localhost:8080/user");
+        let result = await response.json();
+        console.log(result);
+      }}
+    >
+      Get users
+    </button>
+  </div>
+);
 
 class App extends Component {
   render() {
