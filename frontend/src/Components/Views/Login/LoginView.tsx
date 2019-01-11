@@ -21,7 +21,7 @@ export const LoginView: React.SFC<LoginViewProps> = props => {
           onChange={props.onChange}
           prefix={<Icon type="user" />}
           placeholder="Enter your username"
-          id="username"
+          id="email"
         />
       </div>
       <div>
