@@ -9,9 +9,9 @@ function errorMiddleware(
 ) {
     const status = error.status || 500;
     const message = error.message || 'Something went wrong! :(';
-    
-    console.log("error");
-    
+
+    console.log(message);
+
     res.status(status).json({
         status,
         message
