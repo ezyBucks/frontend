@@ -7,7 +7,9 @@ import { Connection, createConnection } from 'typeorm';
 import expressValidator from 'express-validator';
 import { authRoutes } from './auth/auth.route';
 import errorMiddleware from './error/error.middleware';
-import { userRoutes } from './user/user.route';
+// import { userRoutes } from './user/user.route';
+
+import UserRoutes from './router/user.router';
 
 const PORT = process.env.PORT || 8080;
 
@@ -57,7 +59,9 @@ createConnection()
         router.options('*', cors(options));
 
         // Users routes.
-        userRoutes(app, connection);
+        // userRoutes(app, connection);
+
+        const user = new UserRoutes('', app);
         authRoutes(app, connection);
 
         app.use(errorMiddleware);

@@ -21,22 +21,21 @@ passport.use(
                 const user = new User();
                 user.email = email;
                 user.password = password;
-
+                
                 const errors = await validate(user, {
                     validationError: { target: false }
                 });
 
                 if (errors.length > 0) {
-                    done(errors);
+                    done(new HttpException(400, errors));
                 } else {
                     // Unique Email Check
                     const foundUser = await User.findOne({ email });
                     if (foundUser) {
-                        throw new HttpException(400, 'Email is already in use');
-                        // done({ message: 'Email is not unique' });
+                        done(new HttpException(400, 'Email is already in use'));
                     } else {
-                        await user.save().catch((reason: any) => {
-                            done(reason);
+                        await user.save().catch((err: any) => {
+                            done(new HttpException(400, err));
                         });
                     }
                 }
@@ -44,7 +43,7 @@ passport.use(
                 // Send the user information to the next middleware
                 return done(null, user);
             } catch (error) {
-                done(error);
+                done(new HttpException(400, error));
             }
         }
     )

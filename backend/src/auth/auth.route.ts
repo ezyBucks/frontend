@@ -66,10 +66,17 @@ export function authRoutes(app: Application, connection: Connection): void {
                                 {
                                     user: body
                                 },
-                                secret
+                                secret,
+                                {
+                                    expiresIn: '30s'
+                                }
                             );
 
+                            // Add jwt token as a cookie should be http only
+                            res.cookie('jwt', token);
+
                             return res.json({
+                                success: true,
                                 token
                             });
                         }
