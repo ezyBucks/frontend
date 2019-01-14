@@ -3,7 +3,15 @@ import express, { Application } from 'express';
 // https://hackernoon.com/object-oriented-routing-in-nodejs-and-express-71cb1baed9f0
 // Implemented the idea from the above post
 class Router {
+    /**
+     * Express application
+     * Needs to any so we can jank in the register Services
+     */
     private app: any;
+
+    /**
+     * The default path for all of the routes.
+     */
     private routerPath: string;
 
     /**
@@ -13,7 +21,7 @@ class Router {
      * @param app Express
      */
     constructor(routerPath: string, app: Application) {
-        if (app == null) {
+        if (app === null || app === undefined) {
             throw new Error('Missing required App');
         }
 
@@ -35,17 +43,20 @@ class Router {
         return null;
     }
 
-    // registerRoutes function simply iterate over services property getting the verb, the path
-    // and the function and register it along with the base path of the route.
+    /**
+     * Iterate over all of the services(routes) listed in services array
+     * and register it to the express app
+     */
     public registerServices() {
         const routerServices = this.services;
 
         Object.keys(routerServices).forEach((fullPath: string) => {
-            // This is the name of the JS function which implement the service's logic
+            // Get the routes full path
             const service: any = routerServices[fullPath];
+            // Split the HTTP method from the path
             const pathItems = fullPath.split(' ');
 
-            // if not specified, GET HTTP METHOD is used
+            // If no HTTP method listed assume get and cast to lower.
             const verb = (pathItems.length > 1
                 ? pathItems[0]
                 : 'get'
