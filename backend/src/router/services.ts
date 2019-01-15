@@ -1,9 +1,9 @@
 import passport from 'passport';
 
 export default class Service {
-
     public path: string;
     public method: string;
+    public func: string;
 
     /**
      * Getter for middleware. If middleware is empty it will return the
@@ -25,9 +25,10 @@ export default class Service {
      */
     protected readonly mid: any;
 
-    constructor(method: string, path: string, mid?: any[]) {
+    constructor(method: string, path: string, func: string, mid?: any[]) {
         this.method = method;
         this.path = path;
-        this.mid = mid;
+        this.mid = mid || [];
+        this.func = func;
     }
 }

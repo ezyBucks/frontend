@@ -1,43 +1,50 @@
-import { Application, NextFunction, Request, Response } from 'express';
-
-import { Connection } from 'typeorm';
-const { check, validationResult } = require('express-validator/check');
-import jwt from 'jsonwebtoken';
+import { NextFunction, Request, Response } from 'express';
+import Router from './base.router';
 import passport from 'passport';
 import secret from '../config';
 import UserEntity from '../entities/user.entity';
+import Service from './services';
+import jwt from 'jsonwebtoken';
 
-export function authRoutes(app: Application, connection: Connection): void {
-    app.post(
-        '/signup',
-        passport.authenticate('signup', {
-            session: false
-        }),
-        async (req: Request, res: Response, next: NextFunction) => {
-            // Respond with the new user details
-            res.json({
-                message: 'Should be signed up now!',
-                user: req.user
-            });
-        }
-    );
-
-    function checkEmailAndPassword(
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) {
-        req.check('email', 'Email is not valid.').isEmail();
-
-        // password must be at least 5 chars long
-        req.check('password').isLength({ min: 5 });
-
-        console.log(req);
-
-        next();
+class AuthRoutes extends Router {
+    /**
+     * Routes to register
+     */
+    get services() {
+        return [
+            new Service('post', '/signup', 'signUp', [
+                passport.authenticate('signup', {
+                    session: false
+                })
+            ]),
+            new Service('post', '/signin', 'signIn')
+        ];
     }
 
-    app.post('/signin', async (req, res, next) => {
+    /**
+     * Signs the user up with provided email and password
+     *
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     */
+    public async signUp(req: Request, res: Response, next: NextFunction) {
+        res.json({
+            message: 'Should be signed up now!',
+            user: req.user
+        });
+    }
+
+    /**
+     * Signs the user up with provided email and password
+     *
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     */
+    public async signIn(req: Request, res: Response, next: NextFunction) {
+        console.log('temp');
+
         passport.authenticate(
             'signin',
             async (err: Error, user: UserEntity, info) => {
@@ -86,5 +93,7 @@ export function authRoutes(app: Application, connection: Connection): void {
                 }
             }
         )(req, res, next);
-    });
+    }
 }
+
+export default AuthRoutes;

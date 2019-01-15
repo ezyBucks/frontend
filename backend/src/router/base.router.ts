@@ -1,8 +1,13 @@
 import { Application } from 'express';
-import Service from './services.interface';
+import Service from './services';
 
 // https://hackernoon.com/object-oriented-routing-in-nodejs-and-express-71cb1baed9f0
 // Implemented the idea from the above post
+/**
+ * The default router register
+ *
+ * Classes that extend this will auto register routes
+ */
 class Router {
     /**
      * Express application to register our routes against.
@@ -44,15 +49,12 @@ class Router {
      * and register it to the express app
      */
     public registerServices() {
-
         for (const service of this.services) {
-
             (this.app as any)[service.method](
-                service.path,
+                this.routerPath + service.path,
                 ...service.middleware,
-                (this as any)[service.method].bind(this)
+                (this as any)[service.func]
             );
-
         }
     }
 }

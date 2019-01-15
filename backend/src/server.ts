@@ -9,6 +9,7 @@ import { authRoutes } from './auth/auth.route';
 import errorMiddleware from './error/error.middleware';
 
 import UserRoutes from './router/user.router';
+import AuthRoutes from './router/auth.router';
 
 const PORT = process.env.PORT || 8081;
 
@@ -58,7 +59,8 @@ createConnection()
         router.options('*', cors(options));
 
         const user = new UserRoutes('', app);
-        authRoutes(app, connection);
+        const auth = new AuthRoutes('', app);
+        // authRoutes(app, connection);
 
         app.use(errorMiddleware);
 

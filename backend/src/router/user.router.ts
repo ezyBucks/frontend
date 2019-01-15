@@ -1,26 +1,21 @@
 import { NextFunction, Request, Response } from 'express';
-import passport from 'passport';
 import UserEntity from '../entities/user.entity';
 import Router from './base.router';
-import Service from './services.interface';
+import Service from './services';
 
+/**
+ * User Routes
+ */
 class UserRoutes extends Router {
+    /**
+     * Routes to register
+     */
     get services() {
         return [
-
-            new Service("GET", "/user"),
-
-            'GET /user:id': 'getUserById',
-            'POST /user': 'addNewUser',
-            'DELETE /user': 'deleteUser'
-        ];
-    }
-
-    get middleware() {
-        return [
-            passport.authenticate('jwt', {
-                session: false
-            })
+            new Service('get', '/user', 'getAllUsers'),
+            new Service('get', '/user:id', 'getUserById'),
+            new Service('post', '/user', 'addNewUser'),
+            new Service('delete', '/user', 'deleteUser')
         ];
     }
 
