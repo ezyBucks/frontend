@@ -13,7 +13,8 @@
         "no-shadowed-variable": false,
         "object-literal-sort-keys": false,
         "no-var-requires": false,
-        "no-trailing-whitespace": false
+        "no-trailing-whitespace": false,
+        "interface-name": false
     },
     "rulesDirectory": [],
     "no-console": false

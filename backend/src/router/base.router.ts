@@ -1,16 +1,16 @@
-import express, { Application } from 'express';
+import { Application } from 'express';
+import Service from './services.interface';
 
 // https://hackernoon.com/object-oriented-routing-in-nodejs-and-express-71cb1baed9f0
 // Implemented the idea from the above post
 class Router {
     /**
-     * Express application
-     * Needs to any so we can jank in the register Services
+     * Express application to register our routes against.
      */
-    private app: any;
+    private readonly app: Application;
 
     /**
-     * The default path for all of the routes.
+     * The default path to be applied to all of the routes (services).
      */
     private routerPath: string;
 
@@ -35,11 +35,7 @@ class Router {
      * Return dictionary from inheriting class
      * specifying the route name and function
      */
-    get services(): Services[] {
-        return;
-    }
-
-    get middleware(): any {
+    get services(): Service[] {
         return;
     }
 
@@ -48,27 +44,16 @@ class Router {
      * and register it to the express app
      */
     public registerServices() {
-        const routerServices = this.services;
 
-        routerServices.forEach((service: Services) => {
+        for (const service of this.services) {
 
-            // the new path is the base path plus the service's specific path
-            const path =
-                this.routerPath +
-                (pathItems.length > 1 ? pathItems[1] : fullPath);
+            (this.app as any)[service.method](
+                service.path,
+                ...service.middleware,
+                (this as any)[service.method].bind(this)
+            );
 
-            // Check if the method has any middleware
-            if (this.middleware) {
-                this.app[verb](
-                    path,
-                    ...this.middleware,
-                    (this as any)[service.method].bind(this)
-                );
-            } else {
-                // bind to Express's router logic
-                this.app[verb](path, (this as any)[service.method].bind(this));
-            }
-        });
+        }
     }
 }
 

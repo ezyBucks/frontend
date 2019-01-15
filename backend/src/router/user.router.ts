@@ -2,15 +2,18 @@ import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import UserEntity from '../entities/user.entity';
 import Router from './base.router';
+import Service from './services.interface';
 
 class UserRoutes extends Router {
     get services() {
-        return {
-            'GET /user': 'getAllUsers',
+        return [
+
+            new Service("GET", "/user"),
+
             'GET /user:id': 'getUserById',
             'POST /user': 'addNewUser',
             'DELETE /user': 'deleteUser'
-        };
+        ];
     }
 
     get middleware() {
