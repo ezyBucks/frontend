@@ -68,7 +68,7 @@ export function authRoutes(app: Application, connection: Connection): void {
                                 },
                                 secret,
                                 {
-                                    expiresIn: '30s'
+                                    expiresIn: '1h'
                                 }
                             );
 

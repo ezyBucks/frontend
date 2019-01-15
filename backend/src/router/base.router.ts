@@ -35,12 +35,12 @@ class Router {
      * Return dictionary from inheriting class
      * specifying the route name and function
      */
-    get services(): any {
-        return {};
+    get services(): Services[] {
+        return;
     }
 
     get middleware(): any {
-        return null;
+        return;
     }
 
     /**
@@ -50,17 +50,7 @@ class Router {
     public registerServices() {
         const routerServices = this.services;
 
-        Object.keys(routerServices).forEach((fullPath: string) => {
-            // Get the routes full path
-            const service: any = routerServices[fullPath];
-            // Split the HTTP method from the path
-            const pathItems = fullPath.split(' ');
-
-            // If no HTTP method listed assume get and cast to lower.
-            const verb = (pathItems.length > 1
-                ? pathItems[0]
-                : 'get'
-            ).toLowerCase();
+        routerServices.forEach((service: Services) => {
 
             // the new path is the base path plus the service's specific path
             const path =
@@ -72,11 +62,11 @@ class Router {
                 this.app[verb](
                     path,
                     ...this.middleware,
-                    (this as any)[service].bind(this)
+                    (this as any)[service.method].bind(this)
                 );
             } else {
                 // bind to Express's router logic
-                this.app[verb](path, (this as any)[service].bind(this));
+                this.app[verb](path, (this as any)[service.method].bind(this));
             }
         });
     }
