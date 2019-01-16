@@ -1,15 +1,16 @@
 import bodyParser from 'body-parser'; // used to parse the form data that you pass in the request
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import passport from 'passport';
 import { Connection, createConnection } from 'typeorm';
 
 import expressValidator from 'express-validator';
-import { authRoutes } from './auth/auth.route';
 import errorMiddleware from './error/error.middleware';
-import { userRoutes } from './user/user.route';
 
-const PORT = process.env.PORT || 8080;
+import UserRoutes from './router/user.router';
+import AuthRoutes from './router/auth.router';
+
+const PORT = process.env.PORT || 8081;
 
 createConnection()
     .then((connection: Connection) => {
@@ -37,7 +38,7 @@ createConnection()
         // support cors for all origins should change later.
         const router = express.Router();
 
-        // options for cors midddleware
+        // options for cors middleware
         const options: cors.CorsOptions = {
             allowedHeaders: [
                 'Origin',
@@ -56,9 +57,9 @@ createConnection()
         router.use(cors(options));
         router.options('*', cors(options));
 
-        // Users routes.
-        userRoutes(app, connection);
-        authRoutes(app, connection);
+        const user = new UserRoutes('', app);
+        const auth = new AuthRoutes('', app);
+        // authRoutes(app, connection);
 
         app.use(errorMiddleware);
 

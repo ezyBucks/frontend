@@ -1,19 +1,19 @@
 {
     "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended"
-    ],
+    "extends": ["tslint:recommended"],
     "jsRules": {},
     "rules": {
-        "trailing-comma": [ false ],
+        "trailing-comma": [false],
         "arrow-parens": true,
         "quotemark": false,
-        "no-string-literal": false,	
+        "no-string-literal": false,
         "no-console": false,
         "no-shadowed-variable": false,
         "object-literal-sort-keys": false,
         "no-var-requires": false,
-        "no-trailing-whitespace": false
+        "no-trailing-whitespace": false,
+        "interface-name": false,
+        "ordered-imports": false
     },
     "rulesDirectory": [],
     "no-console": false
