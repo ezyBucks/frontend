@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import Router from './base.router';
 import passport from 'passport';
+import Router from './base.router';
 import secret from '../config';
-import UserEntity from '../entities/user.entity';
 import Service from './services';
+import UserEntity from '../entities/user.entity';
+
 import jwt from 'jsonwebtoken';
 
 class AuthRoutes extends Router {
@@ -17,7 +18,7 @@ class AuthRoutes extends Router {
                     session: false
                 })
             ]),
-            new Service('post', '/signin', 'signIn')
+            new Service('post', '/signin', 'signIn').withNoMiddleware()
         ];
     }
 

@@ -5,7 +5,6 @@ import passport from 'passport';
 import { Connection, createConnection } from 'typeorm';
 
 import expressValidator from 'express-validator';
-import { authRoutes } from './auth/auth.route';
 import errorMiddleware from './error/error.middleware';
 
 import UserRoutes from './router/user.router';
@@ -39,7 +38,7 @@ createConnection()
         // support cors for all origins should change later.
         const router = express.Router();
 
-        // options for cors midddleware
+        // options for cors middleware
         const options: cors.CorsOptions = {
             allowedHeaders: [
                 'Origin',
