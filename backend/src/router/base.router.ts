@@ -53,7 +53,7 @@ class Router {
             (this.app as any)[service.method](
                 this.routerPath + service.path,
                 ...service.middleware,
-                (this as any)[service.func]
+                (this as any)[service.func].bind(this)
             );
         }
     }

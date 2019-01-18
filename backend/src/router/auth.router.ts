@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response, Application } from 'express';
 import passport from 'passport';
 import Router from './base.router';
 import secret from '../config';
@@ -44,8 +44,7 @@ class AuthRoutes extends Router {
      * @param next NextFunction
      */
     public async signIn(req: Request, res: Response, next: NextFunction) {
-        console.log('temp');
-
+        console.log(this);
         passport.authenticate(
             'signin',
             async (err: Error, user: UserEntity, info) => {
@@ -53,40 +52,13 @@ class AuthRoutes extends Router {
                     if (err || !user) {
                         return next({ err, user, info });
                     }
-
                     req.login(
                         user,
                         {
                             session: false
                         },
-                        async error => {
-                            if (error) {
-                                return next(error);
-                            }
-
-                            const body = {
-                                id: user.id,
-                                email: user.email
-                            };
-
-                            // sign JWT! need to move this into dotenv!
-                            const token = jwt.sign(
-                                {
-                                    user: body
-                                },
-                                secret,
-                                {
-                                    expiresIn: '1h'
-                                }
-                            );
-
-                            // Add jwt token as a cookie should be http only
-                            res.cookie('jwt', token);
-
-                            return res.json({
-                                success: true,
-                                token
-                            });
+                        error => {
+                            this.loginHandler(error, user, res, next);
                         }
                     );
                 } catch (error) {
@@ -94,6 +66,41 @@ class AuthRoutes extends Router {
                 }
             }
         )(req, res, next);
+    }
+
+    private loginHandler(
+        error: any,
+        user: UserEntity,
+        res: Response,
+        next: NextFunction
+    ) {
+        if (error) {
+            return next(error);
+        }
+
+        const body = {
+            id: user.id,
+            email: user.email
+        };
+
+        // sign JWT! need to move this into dotenv!
+        const token = jwt.sign(
+            {
+                user: body
+            },
+            secret,
+            {
+                expiresIn: '1h'
+            }
+        );
+
+        // Add jwt token as a cookie should be http only
+        res.cookie('jwt', token);
+
+        return res.json({
+            success: true,
+            token
+        });
     }
 }
 
