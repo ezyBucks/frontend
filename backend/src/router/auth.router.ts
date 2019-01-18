@@ -96,7 +96,6 @@ class AuthRoutes extends Router {
 
         // Add jwt token as a cookie should be http only
         res.cookie('jwt', token);
-
         return res.json({
             success: true,
             token

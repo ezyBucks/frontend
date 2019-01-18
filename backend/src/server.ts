@@ -35,28 +35,11 @@ createConnection()
         // Setup Auth JWT
         app.use(passport.initialize());
 
+        // enable All CORS Requests
+        app.use(cors());
+
         // support cors for all origins should change later.
         const router = express.Router();
-
-        // options for cors middleware
-        const options: cors.CorsOptions = {
-            allowedHeaders: [
-                'Origin',
-                'X-Requested-With',
-                'Content-Type',
-                'Accept',
-                'X-Access-Token'
-            ],
-            credentials: true,
-            methods: 'HEAD,OPTIONS,GET,POST,PATCH,DELETE',
-            origin: '*',
-            preflightContinue: false
-        };
-
-        // add cors support probs need to limit this to our domains
-        router.use(cors(options));
-        router.options('*', cors(options));
-
         const user = new UserRoutes('', app);
         const auth = new AuthRoutes('', app);
         // authRoutes(app, connection);
