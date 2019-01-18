@@ -1,14 +1,13 @@
 import bodyParser from 'body-parser'; // used to parse the form data that you pass in the request
 import cors from 'cors';
-import express from 'express';
+import express, { NextFunction } from 'express';
+import HttpException from "./error/HttpException"
 import passport from 'passport';
 import { Connection, createConnection } from 'typeorm';
 import expressValidator from 'express-validator';
 import errorMiddleware from './error/error.middleware';
 import cookieParser from 'cookie-parser';
-
-import UserRoutes from './router/user.router';
-import AuthRoutes from './router/auth.router';
+import registerFunctions from "./router/router.register"
 
 const PORT = process.env.PORT || 8081;
 
@@ -19,11 +18,11 @@ createConnection()
 
         const app = express();
 
-        // support application/json type post data
-        app.use(bodyParser.json());
-
         // Cookies!
         app.use(cookieParser());
+
+        // support application/json type post data
+        app.use(bodyParser.json());
 
         // support for express-validator
         app.use(expressValidator());
@@ -38,14 +37,24 @@ createConnection()
         // Setup Auth JWT
         app.use(passport.initialize());
 
-        // enable All CORS Requests
-        app.use(cors());
+        // Supporting token via COOOKIE
+        var whitelist = ['http://localhost:3000']
+        var corsOptions: cors.CorsOptions = {
+            origin: (origin: any, callback: any) => {
+                if (whitelist.indexOf(origin) !== -1) {
+                    callback(null, true)
+                } else {
+                    callback(new HttpException(400, 'Not allowed by CORS'))
+                }
+            },
+            credentials: true,
+        };
 
-        // support cors for all origins should change later.
-        const router = express.Router();
-        const user = new UserRoutes('', app);
-        const auth = new AuthRoutes('', app);
-        // authRoutes(app, connection);
+        // enable All CORS Requests
+        app.use(cors(corsOptions));
+
+        // Register the routes
+        registerFunctions(app);
 
         app.use(errorMiddleware);
 

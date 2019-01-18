@@ -50,9 +50,9 @@ export class LoginContainer extends React.Component<{}, LoginContainerState> {
             'POST',
             this.state
         );
+
         const result = await response.json();
-        console.log(result);
-        localStorage.setItem('token', result.token);
+        console.log(result);        
     }
 
     public render() {

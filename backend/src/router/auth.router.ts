@@ -7,9 +7,17 @@ import UserEntity from '../entities/user.entity';
 
 import jwt from 'jsonwebtoken';
 
+/**
+ * AuthRoutes
+ *
+ * Defines the authentication routes.
+ * 
+ * @extends Router
+ */
 class AuthRoutes extends Router {
     /**
-     * Routes to register
+     * The HTTP methods supported by the routes and the functions 
+     * they will call.
      */
     get services() {
         return [
@@ -23,7 +31,7 @@ class AuthRoutes extends Router {
     }
 
     /**
-     * Signs the user up with provided email and password
+     * Signs the user up with provided email and password.
      *
      * @param req Request
      * @param res Response
@@ -37,7 +45,7 @@ class AuthRoutes extends Router {
     }
 
     /**
-     * Signs the user up with provided email and password
+     * Signs the user up with provided email and password.
      *
      * @param req Request
      * @param res Response
@@ -68,6 +76,15 @@ class AuthRoutes extends Router {
         )(req, res, next);
     }
 
+    /**
+     * Seperate function the handle the response after running 
+     * the signin authentication.
+     * 
+     * @param error any
+     * @param user UserEntity
+     * @param res Response
+     * @param next NextFunction
+     */
     private loginHandler(
         error: any,
         user: UserEntity,
@@ -94,18 +111,14 @@ class AuthRoutes extends Router {
             }
         );
 
+        console.log(res.cookie);
+
         // Add jwt token as a cookie should be http only
-        // res.cookie('jwt', token, {
-        //     httpOnly: true
-        // });
-        res.cookie('newCookie', 'new Calue');
-
-        // console.log(res.cookie.toString());
-
-        return res.json({
-            success: true,
-            token
+        res.cookie('jwt', token, {
+            httpOnly: true
         });
+
+       res.json({success: true, token});
     }
 }
 

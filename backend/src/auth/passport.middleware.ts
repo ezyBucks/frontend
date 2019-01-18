@@ -5,6 +5,7 @@ import passportLocal from 'passport-local';
 import secret from '../config';
 import { default as User } from '../entities/user.entity';
 import HttpException from '../error/HttpException';
+import { Request } from 'express';
 
 const localStrategy = passportLocal.Strategy;
 
@@ -92,6 +93,15 @@ const JWTstrategy = require('passport-jwt').Strategy;
 // We use this to extract the JWT sent by the user
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
+var cookieExtractor = (req: Request) => {
+    var token = null;
+    if (req && req.cookies)
+    {
+        token = req.cookies['jwt'];
+    }
+    return token;
+};
+
 // This verifies that the token sent by the user is valid
 passport.use(
     new JWTstrategy(
@@ -99,7 +109,7 @@ passport.use(
             // move to dotenv!
             secretOrKey: secret,
             // pull token from header
-            jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
+            jwtFromRequest: cookieExtractor // ExtractJWT.fromAuthHeaderAsBearerToken()
         },
         async (token: any, done: any) => {
             try {
