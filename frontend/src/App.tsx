@@ -11,7 +11,7 @@ const index = () => (
   <div>
     <button
       onClick={async () => {
-        let result = await makeRequest("http://localhost:8080");
+        let result = await makeRequest("http://localhost:8081");
         console.log(await result.text());
       }}
     >
@@ -19,7 +19,7 @@ const index = () => (
     </button>
     <button
       onClick={async () => {
-        let response = await makeRequest("http://localhost:8080/user");
+        let response = await makeRequest("http://localhost:8081/user");
         let result = await response.json();
         console.log(result);
       }}

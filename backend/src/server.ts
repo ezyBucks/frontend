@@ -7,7 +7,7 @@ import { Connection, createConnection } from 'typeorm';
 import expressValidator from 'express-validator';
 import errorMiddleware from './error/error.middleware';
 import cookieParser from 'cookie-parser';
-import registerFunctions from "./router/router.register"
+import registerRoutes from "./router/router.register"
 
 const PORT = process.env.PORT || 8081;
 
@@ -37,7 +37,7 @@ createConnection()
         // Setup Auth JWT
         app.use(passport.initialize());
 
-        // Supporting token via COOOKIE
+        // Supporting credential calls with CORS from FETCH
         var whitelist = ['http://localhost:3000']
         var corsOptions: cors.CorsOptions = {
             origin: (origin: any, callback: any) => {
@@ -54,7 +54,7 @@ createConnection()
         app.use(cors(corsOptions));
 
         // Register the routes
-        registerFunctions(app);
+        registerRoutes(app);
 
         app.use(errorMiddleware);
 

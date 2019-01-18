@@ -52,8 +52,7 @@ class AuthRoutes extends Router {
      * @param next NextFunction
      */
     public async signIn(req: Request, res: Response, next: NextFunction) {
-        // console.log(this);
-        passport.authenticate(
+         passport.authenticate(
             'signin',
             async (err: Error, user: UserEntity, info) => {
                 try {

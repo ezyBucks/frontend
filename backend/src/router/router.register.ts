@@ -7,7 +7,7 @@ import { Application } from 'express';
  * 
  * @param {Application} The express appplication
  */
-export default function registerFunctions(app: Application) {
+export default function registerRoutes(app: Application) {
 	const routesToRegister = getRoutes();
 
 	routesToRegister.forEach((route: any) => {
