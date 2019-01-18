@@ -3,9 +3,9 @@ import cors from 'cors';
 import express from 'express';
 import passport from 'passport';
 import { Connection, createConnection } from 'typeorm';
-
 import expressValidator from 'express-validator';
 import errorMiddleware from './error/error.middleware';
+import cookieParser from 'cookie-parser';
 
 import UserRoutes from './router/user.router';
 import AuthRoutes from './router/auth.router';
@@ -21,6 +21,9 @@ createConnection()
 
         // support application/json type post data
         app.use(bodyParser.json());
+
+        // Cookies!
+        app.use(cookieParser());
 
         // support for express-validator
         app.use(expressValidator());

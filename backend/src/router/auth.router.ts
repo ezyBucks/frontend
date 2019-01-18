@@ -44,7 +44,7 @@ class AuthRoutes extends Router {
      * @param next NextFunction
      */
     public async signIn(req: Request, res: Response, next: NextFunction) {
-        console.log(this);
+        // console.log(this);
         passport.authenticate(
             'signin',
             async (err: Error, user: UserEntity, info) => {
@@ -95,7 +95,13 @@ class AuthRoutes extends Router {
         );
 
         // Add jwt token as a cookie should be http only
-        res.cookie('jwt', token);
+        // res.cookie('jwt', token, {
+        //     httpOnly: true
+        // });
+        res.cookie('newCookie', 'new Calue');
+
+        // console.log(res.cookie.toString());
+
         return res.json({
             success: true,
             token
