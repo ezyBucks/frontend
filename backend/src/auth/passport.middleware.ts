@@ -94,11 +94,17 @@ const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 var cookieExtractor = (req: Request) => {
-    var token = null;
+    let token = null;
     if (req && req.cookies)
     {
         token = req.cookies['jwt'];
     }
+
+    // Still no token? try get one from the header.
+    if (!token) {
+        token = ExtractJWT.fromAuthHeaderAsBearerToken();
+    }
+
     return token;
 };
 

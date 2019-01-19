@@ -1,16 +1,17 @@
 import bodyParser from 'body-parser'; // used to parse the form data that you pass in the request
 import cors from 'cors';
 import express, { NextFunction } from 'express';
-import HttpException from "./error/HttpException"
+import HttpException from './error/HttpException'
 import passport from 'passport';
 import { Connection, createConnection } from 'typeorm';
 import expressValidator from 'express-validator';
 import errorMiddleware from './error/error.middleware';
 import cookieParser from 'cookie-parser';
-import registerRoutes from "./router/router.register"
+import registerRoutes from './router/router.register'
 
 const PORT = process.env.PORT || 8081;
 
+// Create connection to the db using tpyeORM
 createConnection()
     .then((connection: Connection) => {
         // Hacks as well need to wait for the DB connection to be established.
@@ -38,7 +39,7 @@ createConnection()
         app.use(passport.initialize());
 
         // Supporting credential calls with CORS from FETCH
-        var whitelist = ['http://localhost:3000']
+        var whitelist = ['http://localhost:3000', undefined] // Undefined allows postman/insomnia to work
         var corsOptions: cors.CorsOptions = {
             origin: (origin: any, callback: any) => {
                 if (whitelist.indexOf(origin) !== -1) {
@@ -56,6 +57,7 @@ createConnection()
         // Register the routes
         registerRoutes(app);
 
+        // Default error handler
         app.use(errorMiddleware);
 
         app.listen(PORT, () => {

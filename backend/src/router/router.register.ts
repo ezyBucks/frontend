@@ -1,5 +1,6 @@
-import UserRoutes from './user.router';
-import AuthRoutes from './auth.router';
+import UserRoutes from '../user/user.router';
+import AuthRoutes from '../auth/auth.router';
+import TransactionRoutes from "../transaction/transaction.router";
 import { Application } from 'express';
 
 /**
@@ -23,6 +24,7 @@ export default function registerRoutes(app: Application) {
 function getRoutes(): any[] {
 	return [
 		UserRoutes,
-		AuthRoutes
+		AuthRoutes,
+		TransactionRoutes
 	];
 }
