@@ -60,6 +60,11 @@ createConnection()
         // Default error handler
         app.use(errorMiddleware);
 
+        app.get('*', (req, res) => {  
+            // Seems to be a common way to return REACT
+          // res.sendFile(path.join(__dirname, 'client/build'));
+        });
+
         app.listen(PORT, () => {
             console.log('Listening on port ' + PORT);
         });
