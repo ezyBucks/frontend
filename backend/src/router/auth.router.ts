@@ -7,9 +7,17 @@ import UserEntity from '../entities/user.entity';
 
 import jwt from 'jsonwebtoken';
 
+/**
+ * AuthRoutes
+ *
+ * Defines the authentication routes.
+ * 
+ * @extends Router
+ */
 class AuthRoutes extends Router {
     /**
-     * Routes to register
+     * The HTTP methods supported by the routes and the functions 
+     * they will call.
      */
     get services() {
         return [
@@ -23,7 +31,7 @@ class AuthRoutes extends Router {
     }
 
     /**
-     * Signs the user up with provided email and password
+     * Signs the user up with provided email and password.
      *
      * @param req Request
      * @param res Response
@@ -37,15 +45,14 @@ class AuthRoutes extends Router {
     }
 
     /**
-     * Signs the user up with provided email and password
+     * Signs the user up with provided email and password.
      *
      * @param req Request
      * @param res Response
      * @param next NextFunction
      */
     public async signIn(req: Request, res: Response, next: NextFunction) {
-        console.log(this);
-        passport.authenticate(
+         passport.authenticate(
             'signin',
             async (err: Error, user: UserEntity, info) => {
                 try {
@@ -68,6 +75,15 @@ class AuthRoutes extends Router {
         )(req, res, next);
     }
 
+    /**
+     * Seperate function the handle the response after running 
+     * the signin authentication.
+     * 
+     * @param error any
+     * @param user UserEntity
+     * @param res Response
+     * @param next NextFunction
+     */
     private loginHandler(
         error: any,
         user: UserEntity,
@@ -94,13 +110,14 @@ class AuthRoutes extends Router {
             }
         );
 
-        // Add jwt token as a cookie should be http only
-        res.cookie('jwt', token);
+        console.log(res.cookie);
 
-        return res.json({
-            success: true,
-            token
+        // Add jwt token as a cookie should be http only
+        res.cookie('jwt', token, {
+            httpOnly: true
         });
+
+       res.json({success: true, token});
     }
 }
 

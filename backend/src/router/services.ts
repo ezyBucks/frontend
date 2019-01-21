@@ -31,7 +31,7 @@ export default class Service {
     }
 
     constructor(method: string, path: string, func: string, mid?: any[]) {
-        this.method = method;
+        this.method = method.toLowerCase();
         this.path = path;
         this.mid = mid || [];
         this.func = func;
