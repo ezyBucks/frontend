@@ -94,11 +94,18 @@ const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 var cookieExtractor = (req: Request) => {
-    var token = null;
-    if (req && req.cookies)
+    let token = null;
+
+    if (req && req.signedCookies)
     {
-        token = req.cookies['jwt'];
+        token = req.signedCookies['jwt'];
     }
+
+    // Still no token? try get one from the header.
+    if (!token) {
+        token = ExtractJWT.fromAuthHeaderAsBearerToken();
+    }
+
     return token;
 };
 
@@ -109,7 +116,7 @@ passport.use(
             // move to dotenv!
             secretOrKey: secret,
             // pull token from header
-            jwtFromRequest: cookieExtractor // ExtractJWT.fromAuthHeaderAsBearerToken()
+            jwtFromRequest: cookieExtractor
         },
         async (token: any, done: any) => {
             try {

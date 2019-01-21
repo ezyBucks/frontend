@@ -19,7 +19,7 @@ createConnection()
         const app = express();
 
         // Cookies!
-        app.use(cookieParser());
+        app.use(cookieParser("secret"));
 
         // support application/json type post data
         app.use(bodyParser.json());
@@ -38,9 +38,10 @@ createConnection()
         app.use(passport.initialize());
 
         // Supporting credential calls with CORS from FETCH
-        var whitelist = ['http://localhost:3000']
+        var whitelist = ['http://localhost:3000', undefined] // Undefined allows postman/insomnia to work
         var corsOptions: cors.CorsOptions = {
-            origin: (origin: any, callback: any) => {
+            origin: (origin: string, callback: Function) => {
+                
                 if (whitelist.indexOf(origin) !== -1) {
                     callback(null, true)
                 } else {
@@ -56,7 +57,15 @@ createConnection()
         // Register the routes
         registerRoutes(app);
 
+        // Default error handler
         app.use(errorMiddleware);
+
+        app.get('*', (req, res) => {  
+            res.status(404).send({message: "Sorry not found."});
+
+            // Seems to be a common way to return REACT when using one service.        
+            // res.sendFile(path.join(__dirname, 'client/build'));
+        });
 
         app.listen(PORT, () => {
             console.log('Listening on port ' + PORT);
@@ -65,6 +74,6 @@ createConnection()
     .catch((reason: any) => {
         console.log({
             reason,
-            message: 'TypeORM Failed to get connection to DB'
+            message: 'TypeORM Failed to get connection to DB. Is docker running?'
         });
     });

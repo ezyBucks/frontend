@@ -8,9 +8,6 @@ export async function makeRequest(url: string, method = "GET", data = {}) {
   const token = localStorage.getItem("token");
   const fetchOptions: RequestInit = {
     method,
-    // headers: {
-    //   Authorization: `Bearer ${token}`
-    // },
     credentials: 'include'
   };
   if (method.toUpperCase() === "POST") {
