@@ -95,10 +95,9 @@ const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 var cookieExtractor = (req: Request) => {
     let token = null;
-
-    if (req && req.signedCookies)
+    if (req && req.cookies)
     {
-        token = req.signedCookies['jwt'];
+        token = req.cookies['jwt'];
     }
 
     // Still no token? try get one from the header.
