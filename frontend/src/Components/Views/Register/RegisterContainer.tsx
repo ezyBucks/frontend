@@ -1,6 +1,7 @@
 import * as React from "react";
 import { RegisterView } from "./RegisterView";
 import { makeRequest } from "../../../lib/fetch";
+import Fetch2 from "../../../lib/fetch2";
 
 interface RegisterContainerState {
   email: string;
@@ -47,7 +48,14 @@ export class RegisterContainer extends React.Component<
    */
   private handleRegister(e: React.SyntheticEvent<any>) {
     e.preventDefault();
-    makeRequest('http://localhost:8080/signup', 'POST', this.state);
+
+    const request = new Fetch2()
+                          .method('POST')
+                          .url("/signup")
+                          .data(this.state)
+                          .send();
+
+    // makeRequest('http://localhost:8080/signup', 'POST', this.state);
   }
 
   public render() {
