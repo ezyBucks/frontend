@@ -3,6 +3,7 @@ import { ControlledInput } from '../../Misc/ControlledInput';
 import { Icon, Button, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { ContainerDiv, InputCard } from '../../Misc/Styles';
 
 interface LoginViewProps {
     /** Function to handle changes of both user inputs in the view */
@@ -11,15 +12,13 @@ interface LoginViewProps {
     submit: (e: React.SyntheticEvent) => void;
 }
 
-const ContainerDiv = styled.div({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-});
-
 const PaddedDiv = styled.div({
     paddingBottom: '10px'
 });
+
+const StyledControlledInput = styled(ControlledInput)`
+    height: 45px;
+`;
 
 /**
  * Class to render the view for the login page. This is a Stateless Function Component as it should not have any state, and does not need the lifecycle methods,
@@ -28,24 +27,23 @@ const PaddedDiv = styled.div({
 export const LoginView: React.SFC<LoginViewProps> = props => {
     return (
         <ContainerDiv>
-            <Card style={{ width: '600px', margin: '50px' }}>
+            {/* <InputCard style={{ width: '600px', margin: '50px' }}> */}
+            <InputCard>
                 <form onSubmit={props.submit}>
                     <PaddedDiv>
-                        <ControlledInput
+                        <StyledControlledInput
                             onChange={props.onChange}
                             prefix={<Icon type="user" />}
                             placeholder="Enter your username"
                             id="email"
-                            style={{ height: '45px' }}
                         />
                     </PaddedDiv>
                     <PaddedDiv>
-                        <ControlledInput
+                        <StyledControlledInput
                             onChange={props.onChange}
                             placeholder="Please enter your password"
                             type="password"
                             id="password"
-                            style={{ height: '45px' }}
                         />
                     </PaddedDiv>
                     <Button
@@ -57,7 +55,7 @@ export const LoginView: React.SFC<LoginViewProps> = props => {
                         Login
                     </Button>
                 </form>
-            </Card>
+            </InputCard>
             <div style={{ margin: '5px' }}>
                 Need an account? Click <Link to="/register">here</Link> to
                 register
