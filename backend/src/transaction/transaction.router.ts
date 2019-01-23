@@ -24,7 +24,11 @@ class TransactionRoutes extends Router {
      * @param res Response
      * @param next NextFunction
      */
-    public async makeTransaction(req: Request, res: Response, next: NextFunction) {
+    public async makeTransaction(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         const transaction = TransactionEntity.create(req.body);
         transaction.userFrom = req.user.id;
         console.log(transaction);
@@ -38,12 +42,20 @@ class TransactionRoutes extends Router {
      * @param res Response
      * @param next NextFunction
      */
-    public async getTransactions(req: Request, res: Response, next: NextFunction) {
-        const transactions = await TransactionEntity.find({userFrom: req.user.id});
+    public async getTransactions(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        const transactions = await TransactionEntity.find({
+            userFrom: req.user.id
+        });
         let sum = 0;
-        transactions.forEach(trans => {sum += trans.amount});
-        res.send({transactions, sum});
-    }       
+        transactions.forEach(trans => {
+            sum += trans.amount;
+        });
+        res.send({ transactions, sum });
+    }
 }
 
 export default TransactionRoutes;

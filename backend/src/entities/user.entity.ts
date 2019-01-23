@@ -10,7 +10,7 @@ import {
     OneToMany
 } from 'typeorm';
 import { IsEmail, IsString, MinLength } from 'class-validator';
-import Transaction from "./transaction.entity";
+import Transaction from './transaction.entity';
 
 // http://typeorm.io/#/active-record-data-mapper using active record style.
 @Entity()
@@ -41,6 +41,9 @@ export class UserEntity extends BaseEntity {
     @Column({ nullable: true })
     public password: string = '';
 
+    @OneToMany(type => Transaction, transaction => transaction.userFrom)
+    public transactions: Transaction[];
+
     public async comparePassword(potential: string) {
         return await bcrypt.compare(potential, this.password);
     }
@@ -50,9 +53,6 @@ export class UserEntity extends BaseEntity {
         const hash = await bcrypt.hash(this.password, 10);
         this.password = hash;
     }
-
-    @OneToMany(type => Transaction, transaction => transaction.userFrom)
-    transactions: Transaction[];
 
     // @AfterLoad()
     // Can unhash pass here if we want to be loose
