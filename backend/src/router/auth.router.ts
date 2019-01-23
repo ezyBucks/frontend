@@ -126,7 +126,8 @@ class AuthRoutes extends Router {
             httpOnly: true
         });
 
-        res.json({ success: true, token });
+        // Return success and the timeout for the token in seconds
+        res.json({ success: true, expiresIn: 3600 });
     }
 
     /**
