@@ -18,6 +18,12 @@ export const Header: React.SFC = () => {
             <Button type="primary" style={{ margin: '2px' }}>
                 <Link to="/register">Register</Link>
             </Button>
+            <Button type="primary" style={{ margin: '2px' }}>
+                <Link to="/private">private</Link>
+            </Button>
+            <Button type="primary" style={{ margin: '2px' }}>
+                <Link to="/public">public</Link>
+            </Button>
         </header>
     );
 };
