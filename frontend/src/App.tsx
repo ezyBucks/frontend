@@ -14,8 +14,17 @@ const privateRoute = () => {
 const publicRoute = () => {
     return <div>This is a public route</div>;
 };
+
 class App extends Component {
+    private shouldBeState = false;
+
+    private updateAll(){
+        this.shouldBeState = true;
+        this.forceUpdate();
+    }
+
     render() {
+        const isAuthenticated = localStorage.getItem('authenticated');
         return (
             <Router>
                 <div className="App">
@@ -26,7 +35,7 @@ class App extends Component {
                     <PrivateRoute
                         path="/private"
                         component={privateRoute}
-                        isAuthenticated={false}
+                        isAuthenticated={!!isAuthenticated}
                         redirectPath={'/login'}
                     />
                     <Route path="/public" component={publicRoute} />

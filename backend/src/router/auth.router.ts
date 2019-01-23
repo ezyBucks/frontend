@@ -40,6 +40,7 @@ class AuthRoutes extends Router {
     public async signUp(req: Request, res: Response, next: NextFunction) {
         res.json({
             message: 'Should be signed up now!',
+            success: true,
             user: req.user
         });
     }

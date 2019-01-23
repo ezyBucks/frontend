@@ -2,18 +2,27 @@ import * as React from 'react';
 import { LoginView } from './LoginView';
 import { makeRequest } from '../../../lib/fetch';
 import { HOST } from '../../../lib/constants';
+import { Redirect } from 'react-router';
+
+interface LoginContainerProps {
+    authenticated: boolean
+    callback: () => void;
+}
 
 interface LoginContainerState {
     email: string;
     password: string;
+    isAuthenticated: boolean;
 }
 
 /**
  * Class to handle the logic for the login page
  */
-export class LoginContainer extends React.Component<{}, LoginContainerState> {
-    constructor(props: {}) {
+export class LoginContainer extends React.Component<LoginContainerProps, LoginContainerState> {
+    constructor(props: LoginContainerProps){
         super(props);
+
+        this.state = { email: '', password: '', isAuthenticated: this.props.authenticated};
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
@@ -54,14 +63,23 @@ export class LoginContainer extends React.Component<{}, LoginContainerState> {
 
         const result = await response.json();
         console.log(result);
+
+        if (result.success) {
+            localStorage.setItem('authenticated', 'true');
+            this.setState({ isAuthenticated: true });
+        }
     }
 
     public render() {
-        return (
-            <LoginView
-                onChange={this.handleInputChange}
-                submit={this.handleLogin}
-            />
-        );
+        if (!this.state.isAuthenticated) {
+            return (
+                <LoginView
+                    onChange={this.handleInputChange}
+                    submit={this.handleLogin}
+                />
+            );
+        } else {
+            return <Redirect to="/" />;
+        }
     }
 }
