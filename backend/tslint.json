@@ -4,7 +4,7 @@
     "jsRules": {},
     "rules": {
         "trailing-comma": [false],
-        "arrow-parens": true,
+        "arrow-parens": false,
         "quotemark": false,
         "no-string-literal": false,
         "no-console": false,

@@ -11,12 +11,12 @@ import jwt from 'jsonwebtoken';
  * AuthRoutes
  *
  * Defines the authentication routes.
- * 
+ *
  * @extends Router
  */
 class AuthRoutes extends Router {
     /**
-     * The HTTP methods supported by the routes and the functions 
+     * The HTTP methods supported by the routes and the functions
      * they will call.
      */
     get services() {
@@ -52,7 +52,7 @@ class AuthRoutes extends Router {
      * @param next NextFunction
      */
     public async signIn(req: Request, res: Response, next: NextFunction) {
-         passport.authenticate(
+        passport.authenticate(
             'signin',
             async (err: Error, user: UserEntity, info) => {
                 try {
@@ -76,9 +76,9 @@ class AuthRoutes extends Router {
     }
 
     /**
-     * Seperate function the handle the response after running 
+     * Seperate function the handle the response after running
      * the signin authentication.
-     * 
+     *
      * @param error any
      * @param user UserEntity
      * @param res Response
@@ -117,7 +117,7 @@ class AuthRoutes extends Router {
             httpOnly: true
         });
 
-       res.json({success: true, token});
+        res.json({ success: true, token });
     }
 }
 

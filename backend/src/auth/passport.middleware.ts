@@ -115,7 +115,7 @@ passport.use(
             // move to dotenv!
             secretOrKey: secret,
             // pull token from header
-            jwtFromRequest: cookieExtractor // ExtractJWT.fromAuthHeaderAsBearerToken()
+            jwtFromRequest: cookieExtractor
         },
         async (token: any, done: any) => {
             try {
