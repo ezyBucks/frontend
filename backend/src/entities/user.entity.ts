@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import {
-    AfterLoad,
     BaseEntity,
     BeforeInsert,
     Column,
@@ -39,6 +38,9 @@ export class UserEntity extends BaseEntity {
     })
     @Column({ nullable: true })
     public password: string = '';
+
+    @Column({ nullable: false, default: false })
+    public isValidated: boolean = false;
 
     public async comparePassword(potential: string) {
         return await bcrypt.compare(potential, this.password);
