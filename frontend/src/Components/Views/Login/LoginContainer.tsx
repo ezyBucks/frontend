@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { LoginView } from './LoginView';
 import { makeRequest } from '../../../lib/fetch';
+import { HOST } from '../../../lib/constants';
 
 interface LoginContainerState {
     email: string;
@@ -46,13 +47,13 @@ export class LoginContainer extends React.Component<{}, LoginContainerState> {
         console.log('POST to the api');
         console.log(this.state);
         const response = await makeRequest(
-            'http://localhost:8081/signin',
+            `${HOST}/signin`,
             'POST',
             this.state
         );
 
         const result = await response.json();
-        console.log(result);        
+        console.log(result);
     }
 
     public render() {

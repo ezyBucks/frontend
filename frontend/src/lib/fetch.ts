@@ -5,7 +5,6 @@
  * @param data If posting, send this as the body
  */
 export async function makeRequest(url: string, method = "GET", data = {}) {
-  const token = localStorage.getItem("token");
   const fetchOptions: RequestInit = {
     method,
     credentials: 'include'

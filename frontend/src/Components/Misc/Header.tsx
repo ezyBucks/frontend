@@ -2,6 +2,9 @@ import * as React from 'react';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 
+/**
+ * Class to render the header for the application
+ */
 export const Header: React.SFC = () => {
     return (
         <header className="App-header">
