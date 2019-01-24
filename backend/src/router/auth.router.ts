@@ -28,7 +28,7 @@ class AuthRoutes extends Router {
                 })
             ]),
             new Service('post', '/signin', 'signIn').withNoMiddleware(),
-            new Service('get', '/verify', 'verfiyEmail').withNoMiddleware()
+            new Service('get', '/verify', 'verifyEmail').withNoMiddleware()
         ];
     }
 
@@ -100,7 +100,7 @@ class AuthRoutes extends Router {
 
         // correct email and password but not verified email.
         if (!user.isValidated) {
-            return next(new HttpException(400, 'Email is not verfied'));
+            return next(new HttpException(400, 'Email is not verified'));
         }
 
         const body = {
@@ -131,13 +131,13 @@ class AuthRoutes extends Router {
     }
 
     /**
-     * Verifys the users email.
+     * Verify the users email.
      *
      * @param req Request
      * @param res Response
      * @param next NextFunction
      */
-    private async verfiyEmail(req: Request, res: Response, next: NextFunction) {
+    private async verifyEmail(req: Request, res: Response, next: NextFunction) {
         try {
             const result = (await jwt.verify(
                 req.query.token,

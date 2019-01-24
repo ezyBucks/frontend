@@ -1,9 +1,9 @@
 import { BaseMailer } from './base.mailer';
 import { UserEntity } from '../entities/user.entity';
-import { SendMailOptions } from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import secret from '../config';
 import HttpException from '../error/HttpException';
+import { url } from '../helper';
 
 /**
  * The class that handles building email for the verification
@@ -50,7 +50,7 @@ class VerificationEmail extends BaseMailer {
 		<b>Thanks for signing up to ezyBucks!</b>
 		<p>Please click the link the link below to verify your email address</p>
 
-		<a href="http://localhost:8081/verify?token=${this.generateToken()}">Verify Email</a>`;
+		<a href="${url('/verify')}?token=${this.generateToken()}">Verify Email</a>`;
     }
 
     /**
