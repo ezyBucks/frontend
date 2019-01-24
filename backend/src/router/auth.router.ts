@@ -7,6 +7,8 @@ import UserEntity from '../entities/user.entity';
 import { verificationEmail } from '../mailer/verification.mailer';
 import HttpException from '../error/HttpException';
 import jwt from 'jsonwebtoken';
+import { isDev } from '../helper';
+import { default as User } from '../entities/user.entity';
 
 /**
  * AuthRoutes
@@ -56,6 +58,19 @@ class AuthRoutes extends Router {
      * @param next NextFunction
      */
     public async signIn(req: Request, res: Response, next: NextFunction) {
+        if (isDev) {
+            const email = req.body.email;
+            const user = await User.findOne({ email });
+
+            if (!user) {
+                // If the user isn't found in the database, return a message
+                return next(
+                    new HttpException(400, 'Incorrect Email or Password')
+                );
+            }
+            return this.loginHandler(null, user, res, next);
+        }
+
         passport.authenticate(
             'signin',
             async (err: Error, user: UserEntity, info) => {
@@ -73,7 +88,7 @@ class AuthRoutes extends Router {
                         }
                     );
                 } catch (error) {
-                    return next(error);
+                    return next(new HttpException(400, 'Bad data'));
                 }
             }
         )(req, res, next);
@@ -95,7 +110,7 @@ class AuthRoutes extends Router {
         next: NextFunction
     ) {
         if (error) {
-            return next(error);
+            return next(new HttpException(400, error));
         }
 
         // correct email and password but not verified email.
@@ -118,8 +133,6 @@ class AuthRoutes extends Router {
                 expiresIn: '1h'
             }
         );
-
-        console.log(res.cookie);
 
         // Add jwt token as a cookie should be http only
         res.cookie('jwt', token, {

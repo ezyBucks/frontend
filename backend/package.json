@@ -8,7 +8,7 @@
         "build": "tsc",
         "start": "concurrently \"npm:watch-ts\" \"npm:watch-node\"",
         "prod-pm2": "pm2 start dist/server.js -i 2",
-        "prod": "npm run build && node dist/server.js --prod",
+        "prod": "npm run build && node dist/server.js",
         "watch-node": "nodemon dist/server.js",
         "watch-ts": "tsc -w"
     },

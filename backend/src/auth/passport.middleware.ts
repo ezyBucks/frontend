@@ -6,7 +6,6 @@ import secret from '../config';
 import { default as User } from '../entities/user.entity';
 import HttpException from '../error/HttpException';
 import { Request } from 'express';
-import { isDev } from 'src/helper';
 
 const localStrategy = passportLocal.Strategy;
 
@@ -69,13 +68,6 @@ passport.use(
                     // If the user isn't found in the database, return a message
                     return done(null, false, {
                         message: 'Incorrect Email or Password'
-                    });
-                }
-
-                // Development mode so no need for password.
-                if (isDev) {
-                    return done(null, user, {
-                        message: 'Logged in Successfully'
                     });
                 }
 
