@@ -11,6 +11,8 @@ import registerRoutes from './router/router.register';
 
 const PORT = process.env.PORT || 8081;
 
+require('dotenv').config();
+
 createConnection()
     .then((connection: Connection) => {
         // Hacks as well need to wait for the DB connection to be established.

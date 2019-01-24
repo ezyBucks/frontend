@@ -6,6 +6,7 @@ import secret from '../config';
 import { default as User } from '../entities/user.entity';
 import HttpException from '../error/HttpException';
 import { Request } from 'express';
+import { isDev } from 'src/helper';
 
 const localStrategy = passportLocal.Strategy;
 
@@ -70,6 +71,14 @@ passport.use(
                         message: 'Incorrect Email or Password'
                     });
                 }
+
+                // Development mode so no need for password.
+                if (isDev) {
+                    return done(null, user, {
+                        message: 'Logged in Successfully'
+                    });
+                }
+
                 // Validate password and make sure it matches with the corresponding hash stored in the database
                 // If the passwords match, it returns a value of true.
                 const validate = await user.comparePassword(password);

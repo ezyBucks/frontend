@@ -8,7 +8,7 @@
         "build": "tsc",
         "start": "concurrently \"npm:watch-ts\" \"npm:watch-node\"",
         "prod-pm2": "pm2 start dist/server.js -i 2",
-        "prod": "npm run build && npm run start",
+        "prod": "npm run build && node dist/server.js --prod",
         "watch-node": "nodemon dist/server.js",
         "watch-ts": "tsc -w"
     },
@@ -23,6 +23,7 @@
         "concurrently": "^4.1.0",
         "cookie-parser": "^1.4.3",
         "cors": "^2.8.5",
+        "dotenv": "^6.2.0",
         "express": "^4.16.4",
         "express-validator": "^5.3.1",
         "jsonwebtoken": "^8.4.0",

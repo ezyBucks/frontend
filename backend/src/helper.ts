@@ -38,3 +38,5 @@ export function url(path: string, api = true) {
         }${path}`;
     }
 }
+
+export const env = process.env.NODE_ENV || 'development';
