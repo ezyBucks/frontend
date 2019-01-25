@@ -4,9 +4,13 @@ import { makeRequest } from '../../../lib/fetch';
 import { HOST } from '../../../lib/constants';
 import { Redirect } from 'react-router';
 
+import {connect} from 'react-redux';
+import {setAuthenticated} from '../../../Redux/Actions/Authenticate';
+
 interface LoginContainerProps {
     authenticated: boolean
     callback: () => void;
+    authenticate: any;
 }
 
 interface LoginContainerState {
@@ -18,7 +22,7 @@ interface LoginContainerState {
 /**
  * Class to handle the logic for the login page
  */
-export class LoginContainer extends React.Component<LoginContainerProps, LoginContainerState> {
+class LoginContainerM extends React.Component<LoginContainerProps, LoginContainerState> {
     constructor(props: LoginContainerProps){
         super(props);
 
@@ -53,6 +57,7 @@ export class LoginContainer extends React.Component<LoginContainerProps, LoginCo
      */
     private async handleLogin(e: React.SyntheticEvent<any>) {
         e.preventDefault();
+        this.props.authenticate(true);
         console.log('POST to the api');
         console.log(this.state);
         const response = await makeRequest(
@@ -71,6 +76,7 @@ export class LoginContainer extends React.Component<LoginContainerProps, LoginCo
     }
 
     public render() {
+        console.log('LoginContainer Rendered');
         if (!this.state.isAuthenticated) {
             return (
                 <LoginView
@@ -83,3 +89,11 @@ export class LoginContainer extends React.Component<LoginContainerProps, LoginCo
         }
     }
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        authenticate: (value:boolean) => {dispatch(setAuthenticated(value))}
+    }
+}
+
+export const LoginContainer = connect(undefined, mapDispatchToProps)(LoginContainerM);

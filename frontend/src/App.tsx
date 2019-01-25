@@ -6,6 +6,13 @@ import { RegisterContainer } from './Components/Views/Register/RegisterContainer
 import { IndexView } from './Components/Views/Index/IndexView';
 import { Header } from './Components/Misc/Header';
 import { PrivateRoute } from './Components/Misc/PrivateRoute';
+import { createStore } from 'redux';
+import MainReducer from './Redux/Reducers/Reducers';
+import { Provider, connect } from 'react-redux';
+
+const store = createStore(MainReducer);
+
+console.log('Store is: ', store.getState());
 
 const privateRoute = () => {
     return <div>This is a private route</div>;
@@ -15,16 +22,15 @@ const publicRoute = () => {
     return <div>This is a public route</div>;
 };
 
-class App extends Component {
-    private shouldBeState = false;
+const mapStateToProps = (state: any) => {
+    return {
+        authenticated: state.authenticated
+    };
+};
 
-    private updateAll(){
-        this.shouldBeState = true;
-        this.forceUpdate();
-    }
-
+class Main extends Component <{authenticated: any}>{
     render() {
-        const isAuthenticated = localStorage.getItem('authenticated');
+        console.log('Auth state is', this.props.authenticated);
         return (
             <Router>
                 <div className="App">
@@ -35,7 +41,7 @@ class App extends Component {
                     <PrivateRoute
                         path="/private"
                         component={privateRoute}
-                        isAuthenticated={!!isAuthenticated}
+                        isAuthenticated={false}
                         redirectPath={'/login'}
                     />
                     <Route path="/public" component={publicRoute} />
@@ -45,4 +51,10 @@ class App extends Component {
     }
 }
 
-export default App;
+const MainApp = connect(mapStateToProps)(Main);
+
+export default () => (
+    <Provider store={store}>
+        <MainApp />
+    </Provider>
+);
