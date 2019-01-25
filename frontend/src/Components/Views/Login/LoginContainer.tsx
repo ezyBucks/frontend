@@ -5,7 +5,7 @@ import { HOST } from '../../../lib/constants';
 import { Redirect } from 'react-router';
 
 import {connect} from 'react-redux';
-import {setAuthenticated} from '../../../Redux/Actions/Authenticate';
+import {setAuthenticated} from '../../../Redux/authenticate/actions';
 
 interface LoginContainerProps {
     authenticated: boolean

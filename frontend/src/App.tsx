@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { LoginContainer } from './Components/Views/Login/LoginContainer';
 import { RegisterContainer } from './Components/Views/Register/RegisterContainer';
 import { IndexView } from './Components/Views/Index/IndexView';
-import { Header } from './Components/Misc/Header';
-import { PrivateRoute } from './Components/Misc/PrivateRoute';
+import { Header } from './Components/Common/Header';
+import { PrivateRoute } from './Components/Common/PrivateRoute';
 import { createStore } from 'redux';
-import MainReducer from './Redux/Reducers/Reducers';
+import MainReducer from './Redux/authenticate/reducers';
 import { Provider, connect } from 'react-redux';
 
 const store = createStore(MainReducer);
