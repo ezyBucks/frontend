@@ -3,13 +3,13 @@ import { LoginView } from './LoginView';
 import { makeRequest } from '../../../lib/fetch';
 import { HOST } from '../../../lib/constants';
 import { Redirect } from 'react-router';
-import {connect} from 'react-redux';
-import {setAuthenticated} from '../../../Redux/authenticate/actions';
+import { connect } from 'react-redux';
+import { setAuthenticated } from '../../../Redux/authenticate/actions';
 import { Dispatch } from 'redux';
 import { AuthenticatedState } from '../../../Redux/authenticate/types';
 
 interface LoginContainerProps {
-    authenticated: boolean
+    authenticated: boolean;
     setAuthenticated: typeof setAuthenticated;
 }
 
@@ -21,8 +21,11 @@ interface LoginContainerState {
 /**
  * Class to handle the logic for the login page
  */
-class LoginContainer extends React.Component<LoginContainerProps, LoginContainerState> {
-    constructor(props: LoginContainerProps){
+class LoginContainer extends React.Component<
+    LoginContainerProps,
+    LoginContainerState
+> {
+    constructor(props: LoginContainerProps) {
         super(props);
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -66,7 +69,7 @@ class LoginContainer extends React.Component<LoginContainerProps, LoginContainer
         console.log(result);
 
         if (result.success) {
-          this.props.setAuthenticated(true);
+            this.props.setAuthenticated(true);
         }
     }
 
@@ -89,10 +92,10 @@ class LoginContainer extends React.Component<LoginContainerProps, LoginContainer
  * @param state Store for the authentication
  */
 const mapStateToProps = (state: AuthenticatedState) => {
-  return {
-    authenticated: state.authenticated
-  }
-}
+    return {
+        authenticated: state.authenticated
+    };
+};
 
 /**
  * Map the setAuthenticated action creator to props to use in the container
@@ -100,11 +103,14 @@ const mapStateToProps = (state: AuthenticatedState) => {
  */
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        setAuthenticated: (value:boolean) => dispatch(setAuthenticated(value))
-    }
-}
+        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value))
+    };
+};
 
 /**
  * Map the redux store state and actionCreators to the components props
  */
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoginContainer);
