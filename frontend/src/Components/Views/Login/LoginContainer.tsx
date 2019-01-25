@@ -71,7 +71,6 @@ class LoginContainer extends React.Component<LoginContainerProps, LoginContainer
     }
 
     public render() {
-        console.log('LoginContainer Rendered');
         if (!this.props.authenticated) {
             return (
                 <LoginView

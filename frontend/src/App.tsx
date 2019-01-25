@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoginContainer from './Components/Views/Login/LoginContainer';
-import { RegisterContainer } from './Components/Views/Register/RegisterContainer';
+import RegisterContainer from './Components/Views/Register/RegisterContainer';
 import { IndexView } from './Components/Views/Index/IndexView';
 import { Header } from './Components/Common/Header';
 import { PrivateRoute } from './Components/Common/PrivateRoute';
