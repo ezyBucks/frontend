@@ -1,61 +1,62 @@
-import * as React from "react";
-import { RegisterView } from "./RegisterView";
-import { makeRequest } from "../../../lib/fetch";
+import * as React from 'react';
+import { RegisterView } from './RegisterView';
+import { makeRequest } from '../../../lib/fetch';
+import { url } from '../../../lib/helper';
 
 interface RegisterContainerState {
-  email: string;
-  password: string;
-  repassword: string;
+    email: string;
+    password: string;
+    repassword: string;
 }
 
 export class RegisterContainer extends React.Component<
-  {},
-  RegisterContainerState
+    {},
+    RegisterContainerState
 > {
-  public constructor(props: {}) {
-    super(props);
+    public constructor(props: {}) {
+        super(props);
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleRegister = this.handleRegister.bind(this);
-  }
-
-  /**
-   * Handle the input changes in the child component
-   *
-   * @param e Event passed from onChange event
-   */
-  private handleInputChange(e: React.SyntheticEvent<any>) {
-    const id = e.currentTarget.id;
-    const value = e.currentTarget.value || "";
-    switch (id) {
-      case "email":
-        this.setState({ email: value });
-        break;
-      case "password":
-        this.setState({ password: value });
-        break;
-      case "repassword":
-        this.setState({ repassword: value });
-        break;
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
     }
-  }
 
-  /**
-   * Handle the submit event from the form. This should trigger a POST to the api to fetch the login JWT
-   *
-   * @param e Event passed from the onSubmit event
-   */
-  private handleRegister(e: React.SyntheticEvent<any>) {
-    e.preventDefault();
-    makeRequest('http://localhost:8080/signup', 'POST', this.state);
-  }
+    /**
+     * Handle the input changes in the child component
+     *
+     * @param e Event passed from onChange event
+     */
+    private handleInputChange(e: React.SyntheticEvent<any>) {
+        const id = e.currentTarget.id;
+        const value = e.currentTarget.value || '';
+        switch (id) {
+            case 'email':
+                this.setState({ email: value });
+                break;
+            case 'password':
+                this.setState({ password: value });
+                break;
+            case 'repassword':
+                this.setState({ repassword: value });
+                break;
+        }
+    }
 
-  public render() {
-    return (
-      <RegisterView
-        onChange={this.handleInputChange}
-        submit={this.handleRegister}
-      />
-    );
-  }
+    /**
+     * Handle the submit event from the form. This should trigger a POST to the api to fetch the login JWT
+     *
+     * @param e Event passed from the onSubmit event
+     */
+    private handleRegister(e: React.SyntheticEvent<any>) {
+        e.preventDefault();
+        makeRequest(url('/signup'), 'POST', this.state);
+    }
+
+    public render() {
+        return (
+            <RegisterView
+                onChange={this.handleInputChange}
+                submit={this.handleRegister}
+            />
+        );
+    }
 }

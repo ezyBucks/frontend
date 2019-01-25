@@ -22,7 +22,7 @@ passport.use(
                 const user = new User();
                 user.email = email;
                 user.password = password;
-                
+
                 const errors = await validate(user, {
                     validationError: { target: false }
                 });
@@ -70,6 +70,7 @@ passport.use(
                         message: 'Incorrect Email or Password'
                     });
                 }
+
                 // Validate password and make sure it matches with the corresponding hash stored in the database
                 // If the passwords match, it returns a value of true.
                 const validate = await user.comparePassword(password);
@@ -93,10 +94,9 @@ const JWTstrategy = require('passport-jwt').Strategy;
 // We use this to extract the JWT sent by the user
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
-var cookieExtractor = (req: Request) => {
+const cookieExtractor = (req: Request) => {
     let token = null;
-    if (req && req.cookies)
-    {
+    if (req && req.cookies) {
         token = req.cookies['jwt'];
     }
 
