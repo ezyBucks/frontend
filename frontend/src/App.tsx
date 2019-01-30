@@ -12,8 +12,6 @@ import { Provider, connect } from 'react-redux';
 
 const store = createStore(MainReducer);
 
-console.log('Store is: ', store.getState());
-
 const privateRoute = () => {
     return <div>This is a private route</div>;
 };
@@ -30,7 +28,6 @@ const mapStateToProps = (state: any) => {
 
 class Main extends Component <{authenticated: any}>{
     render() {
-        console.log('Auth state is', this.props.authenticated);
         return (
             <Router>
                 <div className="App">
