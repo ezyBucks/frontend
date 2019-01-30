@@ -1,8 +1,4 @@
-export interface Action{
-    type: string;
-}
-
-export const AUTHENTICATE = 'AUTHENTICATE';
+import { AUTHENTICATE } from './types';
 
 export function setAuthenticated(authenticated: boolean) {
     return { type: AUTHENTICATE, authenticated };

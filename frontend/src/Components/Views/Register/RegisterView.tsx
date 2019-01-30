@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ControlledInput } from '../../Misc/ControlledInput';
+import { ControlledInput } from '../../Common/ControlledInput';
 import { Icon, Button, Card } from 'antd';
 import { Link } from 'react-router-dom';
-import { ContainerDiv, InputCard } from '../../Misc/Styles';
+import { ContainerDiv, InputCard } from '../../Common/Styles';
 import styled from '@emotion/styled';
 
 interface RegisterViewProps {

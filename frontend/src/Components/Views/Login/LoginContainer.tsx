@@ -3,30 +3,30 @@ import { LoginView } from './LoginView';
 import { makeRequest } from '../../../lib/fetch';
 import { HOST } from '../../../lib/constants';
 import { Redirect } from 'react-router';
-
-import {connect} from 'react-redux';
-import {setAuthenticated} from '../../../Redux/Actions/Authenticate';
+import { connect } from 'react-redux';
+import { setAuthenticated } from '../../../Redux/authenticate/actions';
+import { Dispatch } from 'redux';
+import { AuthenticatedState } from '../../../Redux/authenticate/types';
 
 interface LoginContainerProps {
-    authenticated: boolean
-    callback: () => void;
-    authenticate: any;
+    authenticated: boolean;
+    setAuthenticated: typeof setAuthenticated;
 }
 
 interface LoginContainerState {
     email: string;
     password: string;
-    isAuthenticated: boolean;
 }
 
 /**
  * Class to handle the logic for the login page
  */
-class LoginContainerM extends React.Component<LoginContainerProps, LoginContainerState> {
-    constructor(props: LoginContainerProps){
+class LoginContainer extends React.Component<
+    LoginContainerProps,
+    LoginContainerState
+> {
+    constructor(props: LoginContainerProps) {
         super(props);
-
-        this.state = { email: '', password: '', isAuthenticated: this.props.authenticated};
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
@@ -57,7 +57,6 @@ class LoginContainerM extends React.Component<LoginContainerProps, LoginContaine
      */
     private async handleLogin(e: React.SyntheticEvent<any>) {
         e.preventDefault();
-        this.props.authenticate(true);
         console.log('POST to the api');
         console.log(this.state);
         const response = await makeRequest(
@@ -70,14 +69,12 @@ class LoginContainerM extends React.Component<LoginContainerProps, LoginContaine
         console.log(result);
 
         if (result.success) {
-            localStorage.setItem('authenticated', 'true');
-            this.setState({ isAuthenticated: true });
+            this.props.setAuthenticated(true);
         }
     }
 
     public render() {
-        console.log('LoginContainer Rendered');
-        if (!this.state.isAuthenticated) {
+        if (!this.props.authenticated) {
             return (
                 <LoginView
                     onChange={this.handleInputChange}
@@ -90,10 +87,30 @@ class LoginContainerM extends React.Component<LoginContainerProps, LoginContaine
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+/**
+ * Map the redux store to the containers props
+ * @param state Store for the authentication
+ */
+const mapStateToProps = (state: AuthenticatedState) => {
     return {
-        authenticate: (value:boolean) => {dispatch(setAuthenticated(value))}
-    }
-}
+        authenticated: state.authenticated
+    };
+};
 
-export const LoginContainer = connect(undefined, mapDispatchToProps)(LoginContainerM);
+/**
+ * Map the setAuthenticated action creator to props to use in the container
+ * @param dispatch Redux dispatch function
+ */
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value))
+    };
+};
+
+/**
+ * Map the redux store state and actionCreators to the components props
+ */
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoginContainer);

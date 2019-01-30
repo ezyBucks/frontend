@@ -3,27 +3,29 @@ import { RegisterView } from './RegisterView';
 import { makeRequest } from '../../../lib/fetch';
 import { HOST } from '../../../lib/constants';
 import { Redirect } from 'react-router';
+import { setAuthenticated } from '../../../Redux/authenticate/actions';
+import { connect } from 'react-redux';
+import { AuthenticatedState } from '../../../Redux/authenticate/types';
+import { Dispatch } from 'redux';
+
+interface RegisterContainerProps {
+    authenticated: boolean;
+    setAuthenticated: typeof setAuthenticated;
+}
+import { url } from '../../../lib/helper';
 
 interface RegisterContainerState {
     email: string;
     password: string;
     repassword: string;
-    isAuthenticated: boolean;
 }
 
-export class RegisterContainer extends React.Component<
-    {},
+class RegisterContainer extends React.Component<
+    RegisterContainerProps,
     RegisterContainerState
 > {
-    public constructor(props: {}) {
+    public constructor(props: RegisterContainerProps) {
         super(props);
-
-        this.state = {
-            email: '',
-            password: '',
-            repassword: '',
-            isAuthenticated: false
-        };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
@@ -66,13 +68,12 @@ export class RegisterContainer extends React.Component<
         console.log(result);
 
         if (result.success) {
-            localStorage.setItem('authenticated', 'true');
-            this.setState({ isAuthenticated: true });
+            this.props.setAuthenticated(true);
         }
     }
 
     public render() {
-        if (!this.state.isAuthenticated) {
+        if (!this.props.authenticated) {
             return (
                 <RegisterView
                     onChange={this.handleInputChange}
@@ -84,3 +85,20 @@ export class RegisterContainer extends React.Component<
         }
     }
 }
+
+const mapStateToProps = (state: AuthenticatedState) => {
+    return {
+        authenticated: state.authenticated
+    };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value))
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RegisterContainer);

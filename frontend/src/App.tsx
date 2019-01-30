@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { LoginContainer } from './Components/Views/Login/LoginContainer';
-import { RegisterContainer } from './Components/Views/Register/RegisterContainer';
+import LoginContainer from './Components/Views/Login/LoginContainer';
+import RegisterContainer from './Components/Views/Register/RegisterContainer';
 import { IndexView } from './Components/Views/Index/IndexView';
-import { Header } from './Components/Misc/Header';
-import { PrivateRoute } from './Components/Misc/PrivateRoute';
+import { Header } from './Components/Common/Header';
+import { PrivateRoute } from './Components/Common/PrivateRoute';
 import { createStore } from 'redux';
-import MainReducer from './Redux/Reducers/Reducers';
+import MainReducer from './Redux/authenticate/reducers';
 import { Provider, connect } from 'react-redux';
+import { AuthenticatedState } from './Redux/authenticate/types';
 
 const store = createStore(MainReducer);
 
@@ -20,13 +21,7 @@ const publicRoute = () => {
     return <div>This is a public route</div>;
 };
 
-const mapStateToProps = (state: any) => {
-    return {
-        authenticated: state.authenticated
-    };
-};
-
-class Main extends Component <{authenticated: any}>{
+class Main extends Component<{ authenticated: any }> {
     render() {
         return (
             <Router>
@@ -38,7 +33,7 @@ class Main extends Component <{authenticated: any}>{
                     <PrivateRoute
                         path="/private"
                         component={privateRoute}
-                        isAuthenticated={false}
+                        isAuthenticated={this.props.authenticated}
                         redirectPath={'/login'}
                     />
                     <Route path="/public" component={publicRoute} />
@@ -47,6 +42,12 @@ class Main extends Component <{authenticated: any}>{
         );
     }
 }
+
+const mapStateToProps = (state: AuthenticatedState) => {
+    return {
+        authenticated: state.authenticated
+    };
+};
 
 const MainApp = connect(mapStateToProps)(Main);
 

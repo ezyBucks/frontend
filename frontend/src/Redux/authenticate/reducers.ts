@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import { AUTHENTICATE } from '../Actions/Authenticate';
+import { AUTHENTICATE, AuthenticateAction } from './types';
 
-function authenticated(state = false, action: any) {
+function authenticated(state = false, action: AuthenticateAction) {
     switch (action.type) {
         case AUTHENTICATE:
             return action.authenticated;

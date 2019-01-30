@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { ControlledInput } from '../../Misc/ControlledInput';
+import { ControlledInput } from '../../Common/ControlledInput';
 import { Icon, Button, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { ContainerDiv, InputCard } from '../../Misc/Styles';
+import { ContainerDiv, InputCard } from '../../Common/Styles';
 
 interface LoginViewProps {
     /** Function to handle changes of both user inputs in the view */
