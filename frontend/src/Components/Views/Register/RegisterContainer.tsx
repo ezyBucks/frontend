@@ -1,6 +1,17 @@
 import * as React from 'react';
 import { RegisterView } from './RegisterView';
 import { makeRequest } from '../../../lib/fetch';
+import { HOST } from '../../../lib/constants';
+import { Redirect } from 'react-router';
+import { setAuthenticated } from '../../../Redux/authenticate/actions';
+import { connect } from 'react-redux';
+import { AuthenticatedState } from '../../../Redux/authenticate/types';
+import { Dispatch } from 'redux';
+
+interface RegisterContainerProps {
+    authenticated: boolean;
+    setAuthenticated: typeof setAuthenticated;
+}
 import { url } from '../../../lib/helper';
 
 interface RegisterContainerState {
@@ -9,11 +20,11 @@ interface RegisterContainerState {
     repassword: string;
 }
 
-export class RegisterContainer extends React.Component<
-    {},
+class RegisterContainer extends React.Component<
+    RegisterContainerProps,
     RegisterContainerState
 > {
-    public constructor(props: {}) {
+    public constructor(props: RegisterContainerProps) {
         super(props);
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -46,17 +57,48 @@ export class RegisterContainer extends React.Component<
      *
      * @param e Event passed from the onSubmit event
      */
-    private handleRegister(e: React.SyntheticEvent<any>) {
+    private async handleRegister(e: React.SyntheticEvent<any>) {
         e.preventDefault();
-        makeRequest(url('/signup'), 'POST', this.state);
+        const response = await makeRequest(
+            `${HOST}/signup`,
+            'POST',
+            this.state
+        );
+        const result = await response.json();
+        console.log(result);
+
+        if (result.success) {
+            this.props.setAuthenticated(true);
+        }
     }
 
     public render() {
-        return (
-            <RegisterView
-                onChange={this.handleInputChange}
-                submit={this.handleRegister}
-            />
-        );
+        if (!this.props.authenticated) {
+            return (
+                <RegisterView
+                    onChange={this.handleInputChange}
+                    submit={this.handleRegister}
+                />
+            );
+        } else {
+            return <Redirect to="/" />;
+        }
     }
 }
+
+const mapStateToProps = (state: AuthenticatedState) => {
+    return {
+        authenticated: state.authenticated
+    };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value))
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RegisterContainer);

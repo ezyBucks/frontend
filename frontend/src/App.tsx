@@ -1,61 +1,58 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { Button } from "antd";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { LoginContainer } from "./Components/Views/Login/LoginContainer";
-import { RegisterContainer } from "./Components/Views/Register/RegisterContainer";
-import { makeRequest } from "./lib/fetch";
+import React, { Component } from 'react';
+import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import LoginContainer from './Components/Views/Login/LoginContainer';
+import RegisterContainer from './Components/Views/Register/RegisterContainer';
+import { IndexView } from './Components/Views/Index/IndexView';
+import { Header } from './Components/Common/Header';
+import { PrivateRoute } from './Components/Common/PrivateRoute';
+import { createStore } from 'redux';
+import MainReducer from './Redux/authenticate/reducers';
+import { Provider, connect } from 'react-redux';
+import { AuthenticatedState } from './Redux/authenticate/types';
 
-const index = () => (
-  <div>
-    <button
-      onClick={async () => {
-        let result = await makeRequest("http://localhost:8081");
-        console.log(await result.text());
-      }}
-    >
-      This is the index page
-    </button>
-    <button
-      onClick={async () => {
-        let response = await makeRequest("http://localhost:8081/user");
-        let result = await response.json();
-        console.log(result);
-      }}
-    >
-      Get users
-    </button>
-  </div>
-);
+const store = createStore(MainReducer);
 
-class App extends Component {
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <header className="App-header">
-            <h2>ezyBucks</h2>
-          </header>
-          <div>
-            <Button type="primary">
-              <Link to="/">Home</Link>
-            </Button>
-            <Button type="primary">
-              <Link to="/login">Login</Link>
-            </Button>
-            <Button type="primary">
-              <Link to="/register">Register</Link>
-            </Button>
-          </div>
+const privateRoute = () => {
+    return <div>This is a private route</div>;
+};
 
-          <Route path="/" exact={true} component={index} />
-          <Route path="/login" component={LoginContainer} />
-          <Route path="/register" component={RegisterContainer} />
-        </div>
-      </Router>
-    );
-  }
+const publicRoute = () => {
+    return <div>This is a public route</div>;
+};
+
+class Main extends Component<{ authenticated: any }> {
+    render() {
+        return (
+            <Router>
+                <div className="App">
+                    <Header />
+                    <Route path="/" exact={true} component={IndexView} />
+                    <Route path="/login" component={LoginContainer} />
+                    <Route path="/register" component={RegisterContainer} />
+                    <PrivateRoute
+                        path="/private"
+                        component={privateRoute}
+                        isAuthenticated={this.props.authenticated}
+                        redirectPath={'/login'}
+                    />
+                    <Route path="/public" component={publicRoute} />
+                </div>
+            </Router>
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = (state: AuthenticatedState) => {
+    return {
+        authenticated: state.authenticated
+    };
+};
+
+const MainApp = connect(mapStateToProps)(Main);
+
+export default () => (
+    <Provider store={store}>
+        <MainApp />
+    </Provider>
+);

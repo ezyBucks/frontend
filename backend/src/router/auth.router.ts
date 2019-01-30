@@ -46,6 +46,7 @@ class AuthRoutes extends Router {
 
         res.json({
             message: 'Should be signed up now!',
+            success: true,
             user: req.user
         });
     }
