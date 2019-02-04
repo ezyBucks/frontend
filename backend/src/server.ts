@@ -3,17 +3,18 @@ import cors from 'cors';
 import express from 'express';
 import HttpException from './error/HttpException';
 import passport from 'passport';
-import { Connection, createConnection } from 'typeorm';
+import { Connection } from 'typeorm';
 import expressValidator from 'express-validator';
 import errorMiddleware from './error/error.middleware';
 import cookieParser from 'cookie-parser';
 import registerRoutes from './router/router.register';
+import connect from './database/database';
 
 const PORT = process.env.PORT || 8081;
 
 require('dotenv').config();
 
-createConnection()
+connect()
     .then((connection: Connection) => {
         // Hacks as well need to wait for the DB connection to be established.
         require('./auth/passport.middleware');
@@ -63,6 +64,10 @@ createConnection()
 
         // Default error handler
         app.use(errorMiddleware);
+
+        app.get('/', (req, res) => {
+            res.json({ success: true, message: 'pong!' });
+        });
 
         app.listen(PORT, () => {
             console.log('Listening on port ' + PORT);

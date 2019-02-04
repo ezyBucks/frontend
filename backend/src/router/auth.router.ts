@@ -42,7 +42,14 @@ class AuthRoutes extends Router {
      * @param next NextFunction
      */
     public async signUp(req: Request, res: Response, next: NextFunction) {
-        verificationEmail(req.user).sendMail();
+        try {
+            verificationEmail(req.user).sendMail();
+        } catch (e) {
+            console.error({
+                reson: e,
+                message: 'Failed to send verification email'
+            });
+        }
 
         res.json({
             message: 'Should be signed up now!',
@@ -115,7 +122,7 @@ class AuthRoutes extends Router {
         }
 
         // correct email and password but not verified email.
-        if (!user.isValidated) {
+        if (!user.isValidated && !isDev) {
             return next(new HttpException(400, 'Email is not verified'));
         }
 
