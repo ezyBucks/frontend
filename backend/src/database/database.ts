@@ -3,7 +3,7 @@ import { isDev } from '../helper';
 
 const connectionOptions: ConnectionOptions = {
     type: 'postgres',
-    host: isDev ? 'localhost' : 'production goes here',
+    host: isDev ? 'localhost' : 'postgres',
     port: 5432,
     username: 'postgres',
     password: 'rootpassword',

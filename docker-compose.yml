@@ -20,7 +20,7 @@ services:
       - "postgres"
     restart: always
     environment:
-      ENVIRONMENT: docker
+      NODE_ENV: production
 
   frontend:
     image: ezybucks/frontend:latest

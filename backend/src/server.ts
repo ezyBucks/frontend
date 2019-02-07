@@ -41,7 +41,8 @@ connect()
         app.use(passport.initialize());
 
         // Supporting credential calls with CORS from FETCH
-        const whitelist = ['http://localhost:3000', undefined]; // Undefined allows postman/insomnia to work
+        // Undefined allows postman/insomnia to work
+        const whitelist = ['http://localhost:3000', 'http://localhost:3001', undefined]; 
         const corsOptions: cors.CorsOptions = {
             origin: (
                 origin: string,
