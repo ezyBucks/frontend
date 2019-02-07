@@ -39,22 +39,26 @@ connect().then((connection: Connection) => {
     // Setup Auth JWT
     app.use(passport.initialize());
 
-        // Supporting credential calls with CORS from FETCH
-        // Undefined allows postman/insomnia to work
-    const whitelist = ['http://localhost:3000', 'http://localhost:3001', undefined]; 
+    // Supporting credential calls with CORS from FETCH
+    // Undefined allows postman/insomnia to work
+    const whitelist = [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        undefined
+    ];
     const corsOptions: cors.CorsOptions = {
-            origin: (
-                origin: string,
-                callback: (error: any, origin?: any) => void
-            ) => {
-                if (whitelist.indexOf(origin) !== -1) {
-                    callback(null, true);
-                } else {
-                    callback(new HttpException(400, 'Not allowed by CORS'));
-                }
-            },
-            credentials: true
-        };
+        origin: (
+            origin: string,
+            callback: (error: any, origin?: any) => void
+        ) => {
+            if (whitelist.indexOf(origin) !== -1) {
+                callback(null, true);
+            } else {
+                callback(new HttpException(400, 'Not allowed by CORS'));
+            }
+        },
+        credentials: true
+    };
 
     // enable All CORS Requests
     app.use(cors(corsOptions));
