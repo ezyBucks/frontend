@@ -1,8 +1,29 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import renderer from 'react-test-renderer';
 import { Header } from './Header';
+import { shallow, mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
 
-xit('renders without crashing', () => { // Skip this until I can get the Link components to work in the test
-    const div = document.createElement('div');
-    ReactDom.render(<Header/>, div);
+it('renders without crashing', () => {
+    shallow(<Header />);
+});
+
+it('fully renders without crashing', () => {
+    const wrapper = mount(
+        <MemoryRouter>
+            <Header />
+        </MemoryRouter>
+    );
+    expect(wrapper.contains(<Header />)).toBe(true);
+});
+
+it('matches the snapshot', () => {
+    const header = renderer
+        .create(
+            <MemoryRouter>
+                <Header />
+            </MemoryRouter>
+        )
+        .toJSON();
+    expect(header).toMatchSnapshot();
 });

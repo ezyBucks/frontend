@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches the snapshot 1`] = `
+<div
+  className="App"
+>
+  <header
+    className="App-header"
+  >
+    <span
+      style={
+        Object {
+          "marginRight": "auto",
+        }
+      }
+    >
+      ezyBucks
+    </span>
+    <button
+      className="ant-btn ant-btn-primary"
+      onClick={[Function]}
+      style={
+        Object {
+          "margin": "2px",
+        }
+      }
+      type="button"
+    >
+      <a
+        href="/"
+        onClick={[Function]}
+      >
+        Home
+      </a>
+    </button>
+    <button
+      className="ant-btn ant-btn-primary"
+      onClick={[Function]}
+      style={
+        Object {
+          "margin": "2px",
+        }
+      }
+      type="button"
+    >
+      <a
+        href="/login"
+        onClick={[Function]}
+      >
+        Login
+      </a>
+    </button>
+    <button
+      className="ant-btn ant-btn-primary"
+      onClick={[Function]}
+      style={
+        Object {
+          "margin": "2px",
+        }
+      }
+      type="button"
+    >
+      <a
+        href="/register"
+        onClick={[Function]}
+      >
+        Register
+      </a>
+    </button>
+    <button
+      className="ant-btn ant-btn-primary"
+      onClick={[Function]}
+      style={
+        Object {
+          "margin": "2px",
+        }
+      }
+      type="button"
+    >
+      <a
+        href="/private"
+        onClick={[Function]}
+      >
+        private
+      </a>
+    </button>
+    <button
+      className="ant-btn ant-btn-primary"
+      onClick={[Function]}
+      style={
+        Object {
+          "margin": "2px",
+        }
+      }
+      type="button"
+    >
+      <a
+        href="/public"
+        onClick={[Function]}
+      >
+        public
+      </a>
+    </button>
+  </header>
+  <div>
+    <h1>
+      ezyBuccs
+    </h1>
+  </div>
+</div>
+`;
