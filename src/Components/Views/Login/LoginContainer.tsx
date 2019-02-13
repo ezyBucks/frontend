@@ -21,7 +21,7 @@ interface LoginContainerState {
 /**
  * Class to handle the logic for the login page
  */
-class LoginContainer extends React.Component<
+export class LoginContainer extends React.Component<
     LoginContainerProps,
     LoginContainerState
 > {
