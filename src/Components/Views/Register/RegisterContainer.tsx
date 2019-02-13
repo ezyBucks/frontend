@@ -12,7 +12,6 @@ interface RegisterContainerProps {
     authenticated: boolean;
     setAuthenticated: typeof setAuthenticated;
 }
-import { url } from '../../../lib/helper';
 
 interface RegisterContainerState {
     email: string;
