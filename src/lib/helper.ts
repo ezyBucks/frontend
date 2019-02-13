@@ -9,13 +9,13 @@ const DEV_FRONT_END_ADDRESS = {
 };
 
 const PROD_API_ADDRESS = {
-    URL: 'http://localhost',
+    URL: 'http://ec2-13-239-33-36.ap-southeast-2.compute.amazonaws.com',
     PORT: '443'
 };
 
 const PROD_FRONT_END_ADDRESS = {
-    URL: 'http://localhost',
-    PORT: '80'
+    URL: 'http://ec2-13-239-33-36.ap-southeast-2.compute.amazonaws.com',
+    PORT: '3001'
 };
 
 /**
