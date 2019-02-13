@@ -4,7 +4,7 @@ import {ProfileView} from "./ProfileView";
 import {Skeleton} from "antd";
 
 interface ProfileContainerProps {
-    showFullName: boolean;
+    showEmail: boolean;
 }
 
 interface ProfileContainerState {
@@ -26,7 +26,7 @@ export class ProfileContainer extends React.Component<ProfileContainerProps, Pro
             user: {
                 id: 7,
                 username: 'Robert Calvert',
-                password: 'randombashdjwhakfgajsdghsd;lkfjghsdfg',
+                password: '$2a$10$kSidjm0VrxW/bNFShtTxGulpIHyXvHEbbXWVQNRAeV0aFohKzFhUG',
                 email: 'rcalvert@live.com',
                 verified: true
             }
@@ -35,7 +35,7 @@ export class ProfileContainer extends React.Component<ProfileContainerProps, Pro
 
     public render() {
         if (this.state.user === null) {
-            return <Skeleton key={0}/>
+            return <Skeleton active={true} key={0}/>
         }
 
         return (
