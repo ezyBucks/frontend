@@ -19,16 +19,16 @@ jobs:
                   name: Run tests
                   command: npm test
     deploy:
-            docker:
-                - image: alpine
-            branches:
-                only:
-                    - master
-                    - master-ci
+        docker:
+            - image: alpine
+        branches:
+            only:
+                - master
+                - master-ci
+        steps:
             - setup_remote_docker:
                   docker_layer_caching: true
             - run:
-                    TAG=0.1.$CIRCLE_BUILD_NUM
-                    docker build -t jallier/ezybucks_frontend:$TAG .
-                    docker login -u $DOCKER_USER -p $DOCKER_PASS
-                    docker push jallier/ezybucks_frontend:$TAG
+                  TAG=0.1.$CIRCLE_BUILD_NUM docker build -t
+                  jallier/ezybucks_frontend:$TAG . docker login -u $DOCKER_USER
+                  -p $DOCKER_PASS docker push jallier/ezybucks_frontend:$TAG
