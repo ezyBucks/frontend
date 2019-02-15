@@ -25,7 +25,7 @@ jobs:
             - checkout
             - setup_remote_docker:
                   docker_layer_caching: true
-            - restore cache:
+            - restore_cache:
                 keys:
                     - v1-{{ .Branch }}
                 paths:
