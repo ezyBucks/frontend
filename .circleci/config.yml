@@ -38,8 +38,7 @@ jobs:
             - run:
                 name: Build docker image
                 command: |
-                  TAG=0.1.$CIRCLE_BUILD_NUM 
-                  docker build -t jallier/ezybucks_frontend:$TAG --cache-from=app . 
+                  docker build -t app --cache-from=app . 
             - run:
                 name: Save Docker image layer cache
                 command: |
@@ -53,9 +52,10 @@ jobs:
                 name: Push container to repo
                 command: |
                     if [ "${CIRCLE_BRANCH}" == 'master']; then
-                        TAG=0.1.$CIRCLE_BUILD_NUM docker build -t
+                        TAG=$CIRCLE_BRANCH-0.1.$CIRCLE_BUILD_NUM 
+                        docker tag app "jallier/ezybucks_frontend:${TAG}"
                         docker login -u $DOCKER_USER -p $DOCKER_PASS 
-                        docker push jallier/ezybucks_frontend:$TAG
+                        docker push "jallier/ezybucks_frontend:${TAG}"
                     fi
 workflows:
     version: 2
