@@ -39,7 +39,7 @@ jobs:
                 name: Build docker image
                 command: |
                   TAG=0.1.$CIRCLE_BUILD_NUM 
-                  docker build jallier/ezybucks_frontend:$TAG --cache-from=app . 
+                  docker build -t jallier/ezybucks_frontend:$TAG --cache-from=app . 
             - run:
                 name: Save Docker image layer cache
                 command: |
