@@ -1,5 +1,7 @@
 # Ezybucks
 
+[![CircleCI](https://circleci.com/gh/ezyBucks/frontend.svg?style=svg)](https://circleci.com/gh/ezyBucks/frontend)
+
 ## What is it?
 
 ## Motivation
@@ -72,14 +74,7 @@ This will then compile changes as they are made, and reload the server when the 
 ### Production
 
 Each section of ezyBucks provides a dockerfile to build containers which will be used to deploy the app in production. To build them, run:
-
-**Backend**
-
-From the backend folder
-
-`docker build -t ezybucks/backend:latest .`
-
-This will create an image with the tag `ezybucks/backend`
+These can also be found on dockerhub under `jallier/ezybucks_frontend`
 
 **Frontend**
 
