@@ -27,7 +27,7 @@ jobs:
                   command: |
                       # notify Code Climate of a pending test report using `before-build`
                       ./cc-test-reporter before-build 
-                      npm test
+                      npm test -- --coverage
                       # upload test report to Code Climate using `after-build`
                       ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
     deploy:
