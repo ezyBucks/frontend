@@ -29,7 +29,7 @@ jobs:
                       ./cc-test-reporter before-build 
                       npm test -- --coverage
                       # upload test report to Code Climate using `after-build`
-                      ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
+                      ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
     deploy:
         docker:
             - image: docker:17.05.0-ce-git
