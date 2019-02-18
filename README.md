@@ -1,6 +1,7 @@
 # Ezybucks
 
 [![CircleCI](https://circleci.com/gh/ezyBucks/frontend.svg?style=svg)](https://circleci.com/gh/ezyBucks/frontend)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/2757b07b8df70e711c11/test_coverage)](https://codeclimate.com/github/ezyBucks/frontend/test_coverage)
 
 ## What is it?
 
