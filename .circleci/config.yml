@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-    build:
+    test:
         environment:
             CC_TEST_REPORTER_ID: ebde6d86d229592905b267ff7536e349957989c045dded8b6a0143a2a9309782
         docker:
@@ -30,7 +30,7 @@ jobs:
                       npm test -- --coverage
                       # upload test report to Code Climate using `after-build`
                       ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
-    deploy:
+    build:
         docker:
             - image: docker:17.05.0-ce-git
         steps:
@@ -65,16 +65,38 @@ jobs:
                   command: |
                       if [ "${CIRCLE_BRANCH}" == 'master' ]; then
                           TAG=$CIRCLE_BRANCH-0.1.$CIRCLE_BUILD_NUM 
-                          docker tag app "jallier/ezybucks_frontend:${TAG}"
+                          docker tag app "jallier/ezybucks_frontend:${TAG}" "jallier/ezybucks_frontend:latest"
                           docker login -u $DOCKER_USER -p $DOCKER_PASS 
                           docker push "jallier/ezybucks_frontend:${TAG}"
                           echo "Image pushed"
                       fi
+    deploy:
+        docker:
+            - image: circleci/node:8
+        steps:
+            - add_ssh_keys:
+                  fingerprints:
+                      - '97:c1:56:62:31:4e:8b:14:02:59:07:9c:fb:16:1b:af'
+            - run:
+                name: Ensure key fingerprint is valid
+                command: |
+                    ssh-keyscan 13.239.33.36 >> ~/.ssh/known_hosts
+            - run:
+                  name: Pull and restart running containers
+                  command: |
+                      ssh deployer@13.239.33.36 "./ssh_deploy.sh"
 workflows:
     version: 2
     workflow:
         jobs:
-            - build
+            - test
+            - build:
+                  requires:
+                      - test
+                  filters:
+                      branches:
+                          only:
+                              - master
             - deploy:
                   requires:
                       - build
@@ -82,4 +104,3 @@ workflows:
                       branches:
                           only:
                               - master
-                              - master-ci
