@@ -8,7 +8,7 @@ interface ProfileContainerProps {
 }
 
 interface ProfileContainerState {
-    user: Types.User | null;
+    user: Types.User | undefined;
 }
 
 export class ProfileContainer extends React.Component<ProfileContainerProps, ProfileContainerState> {
@@ -17,7 +17,7 @@ export class ProfileContainer extends React.Component<ProfileContainerProps, Pro
         super(props);
 
         this.state = {
-            user: null
+            user: undefined
         };
     }
 
@@ -34,7 +34,7 @@ export class ProfileContainer extends React.Component<ProfileContainerProps, Pro
     }
 
     public render() {
-        if (this.state.user === null) {
+        if (this.state.user === undefined) {
             return <Skeleton active={true} key={0}/>
         }
 

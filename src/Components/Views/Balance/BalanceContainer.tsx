@@ -8,7 +8,7 @@ interface BalanceContainerProps {
 }
 
 interface BalanceContainerState {
-    balance: Types.Balance | null;
+    balance: Types.Balance | undefined;
 }
 
 export class BalanceContainer extends React.Component<BalanceContainerProps, BalanceContainerState> {
@@ -17,7 +17,7 @@ export class BalanceContainer extends React.Component<BalanceContainerProps, Bal
         super(props);
 
         this.state = {
-            balance: null
+            balance: undefined
         };
     }
 
@@ -31,7 +31,7 @@ export class BalanceContainer extends React.Component<BalanceContainerProps, Bal
     }
 
     public render() {
-        if (this.state.balance === null) {
+        if (this.state.balance === undefined) {
             return <Skeleton active={true} />
         }
 

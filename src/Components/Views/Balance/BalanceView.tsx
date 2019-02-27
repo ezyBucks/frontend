@@ -7,8 +7,8 @@ interface BalanceViewProps {
 
 export const BalanceView: React.SFC<BalanceViewProps> = props => {
     return (
-        <ContainerDiv>
-            Account Balance
+        <ContainerDiv style={{ fontSize: '20px' }}>
+            <b>Account Balance</b>
             <br/>
             {props.balance} ezy bucks
         </ContainerDiv>

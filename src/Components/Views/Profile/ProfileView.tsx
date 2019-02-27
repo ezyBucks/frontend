@@ -57,6 +57,6 @@ const UserAvatar: React.SFC<{ initials: string }> = props => {
  *
  * @returns string
  */
-const getInitials = (username: string) => {
+function getInitials(username: string): string {
     return ["", ...username.split(" ")].reduce((initials, word) => initials + word[0]);
-};
+}
