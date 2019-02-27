@@ -44,7 +44,7 @@ export const RegisterView: React.SFC<RegisterViewProps> = props => {
                     <PaddedDiv>
                         <StyledControlledInput
                             onChange={props.onChange}
-                            placeholder="Please reenter the password"
+                            placeholder="Please re-enter the password"
                             type="password"
                             id="repassword"
                         />

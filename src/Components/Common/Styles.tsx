@@ -7,6 +7,18 @@ export const ContainerDiv = styled.div({
     alignItems: 'center'
 });
 
+export const LeftHalf = styled.div({
+    display: 'block',
+    width: '50%',
+    float: 'left',
+});
+
+export const RightHalf = styled.div({
+    display: 'block',
+    width: '50%',
+    float: 'right',
+});
+
 export const InputCard = styled(Card)`
     width: 600px;
     margin: 50px;

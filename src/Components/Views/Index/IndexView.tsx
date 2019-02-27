@@ -1,4 +1,6 @@
 import * as React from 'react';
+import {LeftHalf} from '../../Common/Styles';
+import {ProfileContainer} from "../Profile/ProfileContainer";
 
 /**
  * Class to display the main landing page when not logged in.
@@ -6,7 +8,9 @@ import * as React from 'react';
 export const IndexView: React.SFC = () => {
     return (
         <div>
-            <h1>ezyBuccs</h1>
+            <LeftHalf>
+                <ProfileContainer showEmail={true} />
+            </LeftHalf>
         </div>
     );
 };
