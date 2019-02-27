@@ -2,8 +2,84 @@
 
 exports[`matches the snapshot 1`] = `
 <div>
-  <h1>
-    ezyBuccs
-  </h1>
+  <div
+    className="css-337oej"
+  >
+    <div
+      className="css-dvxtzn"
+      style={
+        Object {
+          "marginTop": "30px",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "float": "left",
+            "width": "25%",
+          }
+        }
+      >
+        <span
+          className="ant-avatar ant-avatar-square"
+          style={
+            Object {
+              "backgroundColor": "#1890ff",
+              "float": "left",
+              "fontSize": "25px",
+              "height": 64,
+              "lineHeight": "64px",
+              "width": 64,
+            }
+          }
+        >
+          <span
+            className="ant-avatar-string"
+          >
+            <b>
+              RC
+            </b>
+          </span>
+        </span>
+        <span>
+          <b
+            style={
+              Object {
+                "fontSize": "20px",
+              }
+            }
+          >
+            Robert Calvert
+          </b>
+          <br />
+          rcalvert@live.com
+        </span>
+        <div
+          style={
+            Object {
+              "marginTop": "50px",
+            }
+          }
+        >
+          <div
+            className="css-dvxtzn"
+            style={
+              Object {
+                "fontSize": "20px",
+              }
+            }
+          >
+            <b>
+              Account Balance
+            </b>
+            <br />
+            2786
+             ezy bucks
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
