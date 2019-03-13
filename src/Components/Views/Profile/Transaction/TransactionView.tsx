@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { ContainerDiv } from '../../../Common/Styles';
-import AutoComplete, { DataSourceItemType } from 'antd/lib/auto-complete';
 import { Select, Spin, InputNumber, Button, Popconfirm } from 'antd';
-import { User } from '../../../../types/User';
-import { UserSelect } from './TransactionContainer';
+import { UserSelect, DEFAULT_AMOUNT } from './TransactionContainer';
 
 /**
  * Props needed for the Select component
@@ -63,7 +61,7 @@ const TransactionView: React.SFC<TransactionViewProps> = props => {
                     defaultValue={1}
                     formatter={formatter}
                     parser={parser}
-                    min={1}
+                    min={DEFAULT_AMOUNT}
                     onChange={props.handleAmountChange}
                 />
             </div>

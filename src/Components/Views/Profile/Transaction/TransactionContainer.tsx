@@ -1,10 +1,13 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import TransactionView from './TransactionView';
 import { User } from '../../../../types/User';
 import { wait } from '../../../Common/Mock';
 import { notification } from 'antd';
 import { makeRequest } from '../../../../lib/fetch';
 import { HOST } from '../../../../lib/constants';
+
+/** Default minimum ezybucks amount to send */
+export const DEFAULT_AMOUNT = 1;
 
 /**
  * Interface to handle the two extra fields needed for an antd select component
@@ -37,13 +40,13 @@ export class TransactionContainer extends React.Component<
             value: '',
             fetchingUsers: false,
             sending: false,
-            amount: 1
+            amount: DEFAULT_AMOUNT
         };
     }
 
     /**
      * Fetch the users from the api based on a search string.
-     * Currently returning dummy data with a delay to simulate
+     * Currently returning all users with one dummy entry
      * @param text The text query to send to the api
      * @returns Promise with the array of Users returned from the api
      */
@@ -118,19 +121,22 @@ export class TransactionContainer extends React.Component<
         });
     };
 
+    /**
+     * Handle when the amount selected changes
+     * @param value the amount selected
+     */
     handleAmountChange = (value: number | undefined) => {
         value && this.setState({ amount: value });
     };
 
     /**
-     * Handle sending ezybucks to another user
+     * Handle sending ezybucks to another user. Triggered by clicking send in the view component
      */
     handleSend = async () => {
         const { amount, value } = this.state;
         console.log('clicked send!');
         this.setState({ sending: true });
 
-        // debugger;
         // First, validate
         let description = '';
         let error = false;
@@ -157,14 +163,14 @@ export class TransactionContainer extends React.Component<
         await wait(2000);
 
         // Call this on successful post
-        this.setState({ sending: false, value: '', amount: 1 });
+        this.setState({ sending: false, value: '', amount: DEFAULT_AMOUNT });
         notification.open({
             message: `${amount} ezyBucks sent!`
         });
     };
 
     /**
-     * Handle when the popconfirm is clicked
+     * Handle when the popconfirm is clicked. Generate the text so that it displays different messages depending on if users are selected
      */
     handlePopconfirmClick = () => {
         if (this.state.value.length === 0) {
