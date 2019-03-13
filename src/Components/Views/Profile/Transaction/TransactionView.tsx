@@ -11,11 +11,26 @@ import { UserSelect } from './TransactionContainer';
 interface TransactionViewProps {
     fetchingUsers: boolean;
     fetchUsers: (text?: string) => Promise<void>;
-    handleChange: (value: string) => void;
+    handleUserChange: (value: string) => void;
+    handleAmountChange: (value: number | undefined) => void;
     handleSend: () => void;
+    handleClick: () => string;
     sending: boolean;
     users: UserSelect[];
 }
+
+const formatter = (value: string | number | undefined) =>
+    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+const parser = (value: string | undefined) =>
+    parseInt(value ? value.replace(/\$\s?|(,*)/g, '') : '', 10);
+
+const selectFilter = (inputValue: string, option: any) => {
+    return (
+        option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >=
+        0
+    );
+};
 
 const TransactionView: React.SFC<TransactionViewProps> = props => {
     return (
@@ -27,13 +42,15 @@ const TransactionView: React.SFC<TransactionViewProps> = props => {
             <div style={{ width: '400px', paddingBottom: '15px' }}>
                 <h3>Transfer</h3>
                 <Select
-                    notFoundContent={props.fetchingUsers && <Spin size={'small'} />}
+                    notFoundContent={
+                        props.fetchingUsers && <Spin size={'small'} />
+                    }
                     placeholder={'Select users to transfer to'}
                     mode={'multiple'}
                     style={{ width: '70%' }}
                     onSearch={props.fetchUsers}
-                    onChange={props.handleChange}
-                    filterOption={false}
+                    onChange={props.handleUserChange}
+                    filterOption={selectFilter}
                 >
                     {props.users.map(u => (
                         <Select.Option key={u.value}>{u.text}</Select.Option>
@@ -44,20 +61,17 @@ const TransactionView: React.SFC<TransactionViewProps> = props => {
                 <h3>Amount of ezyBucks to send</h3>
                 <InputNumber
                     defaultValue={1}
-                    formatter={value =>
-                        `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                    }
-                    parser={value =>
-                        parseInt(
-                            value ? value.replace(/\$\s?|(,*)/g, '') : '',
-                            10
-                        )
-                    }
+                    formatter={formatter}
+                    parser={parser}
                     min={1}
+                    onChange={props.handleAmountChange}
                 />
             </div>
             <div>
-                <Popconfirm title='Are you sure you want to send <AMOUNT> to <USER>' onConfirm={props.handleSend}>
+                <Popconfirm
+                    title={props.handleClick()}
+                    onConfirm={props.handleSend}
+                >
                     <Button loading={props.sending}>Send!</Button>
                 </Popconfirm>
             </div>

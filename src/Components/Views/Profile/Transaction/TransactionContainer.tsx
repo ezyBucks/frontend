@@ -16,9 +16,10 @@ export interface UserSelect extends User {
 
 interface TransactionContainerState {
     users: UserSelect[]; // Users fetched from the api query
-    value: string; // The value passed into the select component
+    value: string[] | string; // The value passed into the select component
     fetchingUsers: boolean; // Whether data is currently being fetched from the api
     sending: boolean; // If the transaction is being processed on the backend
+    amount: number; // The amount of ezybucks to send
 }
 
 /**
@@ -35,7 +36,8 @@ export class TransactionContainer extends React.Component<
             users: [],
             value: '',
             fetchingUsers: false,
-            sending: false
+            sending: false,
+            amount: 1
         };
     }
 
@@ -70,7 +72,11 @@ export class TransactionContainer extends React.Component<
      */
     processUsers(users: User[]): UserSelect[] {
         return users.map(u => {
-            return { ...u, value: `${u.id}`, text: `${u.username} - <${u.email}>` };
+            return {
+                ...u,
+                value: `${u.id}`,
+                text: `${u.username} - <${u.email}>`
+            };
         });
     }
 
@@ -89,6 +95,12 @@ export class TransactionContainer extends React.Component<
                 this.setState({ users: processedUsers, fetchingUsers: false });
             } catch (e) {
                 console.log('Error fetching users from the API', e);
+                notification.open({
+                    message: 'Error fetching users!',
+                    description:
+                        'Something has gone wrong when fetching users; Please try again',
+                    type: 'error'
+                });
                 this.setState({ fetchingUsers: false });
             }
         }
@@ -98,7 +110,7 @@ export class TransactionContainer extends React.Component<
      * Handle when an item is selected in the child Select component
      * @param value the value that was selected (id)
      */
-    handleChange = (value: string) => {
+    handleUserChange = (value: string) => {
         this.setState({
             value,
             users: [],
@@ -106,30 +118,69 @@ export class TransactionContainer extends React.Component<
         });
     };
 
+    handleAmountChange = (value: number | undefined) => {
+        value && this.setState({ amount: value });
+    };
+
     /**
      * Handle sending ezybucks to another user
      */
     handleSend = async () => {
+        const { amount, value } = this.state;
         console.log('clicked send!');
         this.setState({ sending: true });
+
+        // debugger;
+        // First, validate
+        let description = '';
+        let error = false;
+        if (!value) {
+            description =
+                'No user selected; Please select a user and try again';
+            error = true;
+        }
+        if (!amount) {
+            description = 'No amount selected; Please select a valid amount';
+            error = true;
+        }
+        if (error) {
+            notification.open({
+                message: 'Error!',
+                description,
+                type: 'error'
+            });
+            this.setState({ sending: false });
+            return;
+        }
 
         // Make the post to the transaction endpoint here
         await wait(2000);
 
         // Call this on successful post
-        this.setState({ sending: false });
+        this.setState({ sending: false, value: '', amount: 1 });
         notification.open({
-            message: 'ezyBucks sent!',
-            description: '<AMOUNT> sent to <USER>'
+            message: `${amount} ezyBucks sent!`
         });
+    };
+
+    /**
+     * Handle when the popconfirm is clicked
+     */
+    handlePopconfirmClick = () => {
+        if (this.state.value.length === 0) {
+            return 'Please select a user to send some bucks to before sending';
+        }
+        return 'Are you sure you want to send?';
     };
 
     render() {
         const { fetchingUsers, users, sending } = this.state;
         return (
             <TransactionView
-                handleChange={this.handleChange}
+                handleUserChange={this.handleUserChange}
+                handleAmountChange={this.handleAmountChange}
                 handleSend={this.handleSend}
+                handleClick={this.handlePopconfirmClick}
                 sending={sending}
                 fetchUsers={this.getUsers}
                 fetchingUsers={fetchingUsers}
