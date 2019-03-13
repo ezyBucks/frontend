@@ -3,6 +3,8 @@ import TransactionView from './TransactionView';
 import { User } from '../../../../types/User';
 import { wait } from '../../../Common/Mock';
 import { notification } from 'antd';
+import { makeRequest } from '../../../../lib/fetch';
+import { HOST } from '../../../../lib/constants';
 
 /**
  * Interface to handle the two extra fields needed for an antd select component
@@ -44,22 +46,20 @@ export class TransactionContainer extends React.Component<
      * @returns Promise with the array of Users returned from the api
      */
     async getUsersFromAPI(text?: string): Promise<User[]> {
-        await wait(1500);
+        let result = await makeRequest(`${HOST}/user`);
+        if (result.status != 200) {
+            throw new Error('' + result.status);
+        }
+        let content = await result.json();
         return [
             {
                 id: 1,
-                username: 'justin',
-                email: 'justin.hallier@ezyvet.com',
-                password: 'this shouldnt be a property lol',
-                verified: true
-            },
-            {
-                id: 2,
                 username: 'robert',
                 email: 'robert.calvert@ezyvet.com',
                 password: 'this shouldnt be a property lol',
                 verified: true
-            }
+            },
+            ...content.items
         ];
     }
 
@@ -70,7 +70,7 @@ export class TransactionContainer extends React.Component<
      */
     processUsers(users: User[]): UserSelect[] {
         return users.map(u => {
-            return { ...u, value: `${u.id}`, text: u.username };
+            return { ...u, value: `${u.id}`, text: `${u.username} - <${u.email}>` };
         });
     }
 
@@ -82,9 +82,15 @@ export class TransactionContainer extends React.Component<
     getUsers = async (text?: string) => {
         if (!this.state.fetchingUsers) {
             this.setState({ fetchingUsers: true });
-            const users = await this.getUsersFromAPI(text);
-            const processedUsers = this.processUsers(users);
-            this.setState({ users: processedUsers, fetchingUsers: false });
+            try {
+                //TODO: Add a timeout check so we dont' spam when a user is typing
+                const users = await this.getUsersFromAPI(text);
+                const processedUsers = this.processUsers(users);
+                this.setState({ users: processedUsers, fetchingUsers: false });
+            } catch (e) {
+                console.log('Error fetching users from the API', e);
+                this.setState({ fetchingUsers: false });
+            }
         }
     };
 
