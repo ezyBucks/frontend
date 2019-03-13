@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ContainerDiv } from '../../../Common/Styles';
 import AutoComplete, { DataSourceItemType } from 'antd/lib/auto-complete';
-import { Select, Spin, InputNumber, Button } from 'antd';
+import { Select, Spin, InputNumber, Button, Popconfirm } from 'antd';
 import { User } from '../../../../types/User';
 import { UserSelect } from './TransactionContainer';
 
@@ -9,9 +9,11 @@ import { UserSelect } from './TransactionContainer';
  * Props needed for the Select component
  */
 interface TransactionViewProps {
-    fetching: boolean;
+    fetchingUsers: boolean;
     fetchUsers: (text?: string) => Promise<void>;
     handleChange: (value: string) => void;
+    handleSend: () => void;
+    sending: boolean;
     users: UserSelect[];
 }
 
@@ -25,7 +27,7 @@ const TransactionView: React.SFC<TransactionViewProps> = props => {
             <div style={{ width: '400px', paddingBottom: '15px' }}>
                 <h3>Transfer</h3>
                 <Select
-                    notFoundContent={props.fetching && <Spin size={'small'} />}
+                    notFoundContent={props.fetchingUsers && <Spin size={'small'} />}
                     placeholder={'Select users to transfer to'}
                     mode={'multiple'}
                     style={{ width: '70%' }}
@@ -38,7 +40,7 @@ const TransactionView: React.SFC<TransactionViewProps> = props => {
                     ))}
                 </Select>
             </div>
-            <div style={{paddingBottom: '15px'}}>
+            <div style={{ paddingBottom: '15px' }}>
                 <h3>Amount of ezyBucks to send</h3>
                 <InputNumber
                     defaultValue={1}
@@ -55,7 +57,9 @@ const TransactionView: React.SFC<TransactionViewProps> = props => {
                 />
             </div>
             <div>
-                <Button>Send!</Button>
+                <Popconfirm title='Are you sure you want to send <AMOUNT> to <USER>' onConfirm={props.handleSend}>
+                    <Button loading={props.sending}>Send!</Button>
+                </Popconfirm>
             </div>
         </ContainerDiv>
     );

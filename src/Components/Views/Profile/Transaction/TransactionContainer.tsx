@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import TransactionView from './TransactionView';
 import { User } from '../../../../types/User';
 import { wait } from '../../../Common/Mock';
+import { notification } from 'antd';
 
 /**
  * Interface to handle the two extra fields needed for an antd select component
@@ -14,7 +15,8 @@ export interface UserSelect extends User {
 interface TransactionContainerState {
     users: UserSelect[]; // Users fetched from the api query
     value: string; // The value passed into the select component
-    fetching: boolean; // Whether data is currently being fetched from the api
+    fetchingUsers: boolean; // Whether data is currently being fetched from the api
+    sending: boolean; // If the transaction is being processed on the backend
 }
 
 /**
@@ -27,7 +29,12 @@ export class TransactionContainer extends React.Component<
     constructor(props: {}) {
         super(props);
 
-        this.state = { users: [], value: '', fetching: false };
+        this.state = {
+            users: [],
+            value: '',
+            fetchingUsers: false,
+            sending: false
+        };
     }
 
     /**
@@ -73,11 +80,11 @@ export class TransactionContainer extends React.Component<
      * @param text string to query the api with
      */
     getUsers = async (text?: string) => {
-        if (!this.state.fetching) {
-            this.setState({ fetching: true });
+        if (!this.state.fetchingUsers) {
+            this.setState({ fetchingUsers: true });
             const users = await this.getUsersFromAPI(text);
             const processedUsers = this.processUsers(users);
-            this.setState({ users: processedUsers, fetching: false });
+            this.setState({ users: processedUsers, fetchingUsers: false });
         }
     };
 
@@ -89,17 +96,37 @@ export class TransactionContainer extends React.Component<
         this.setState({
             value,
             users: [],
-            fetching: false
+            fetchingUsers: false
+        });
+    };
+
+    /**
+     * Handle sending ezybucks to another user
+     */
+    handleSend = async () => {
+        console.log('clicked send!');
+        this.setState({ sending: true });
+
+        // Make the post to the transaction endpoint here
+        await wait(2000);
+
+        // Call this on successful post
+        this.setState({ sending: false });
+        notification.open({
+            message: 'ezyBucks sent!',
+            description: '<AMOUNT> sent to <USER>'
         });
     };
 
     render() {
-        const { fetching, users } = this.state;
+        const { fetchingUsers, users, sending } = this.state;
         return (
             <TransactionView
                 handleChange={this.handleChange}
+                handleSend={this.handleSend}
+                sending={sending}
                 fetchUsers={this.getUsers}
-                fetching={fetching}
+                fetchingUsers={fetchingUsers}
                 users={users}
             />
         );
