@@ -159,13 +159,17 @@ export class TransactionContainer extends React.Component<
             return;
         }
 
-        // Make the post to the transaction endpoint here
-        await wait(2000);
+        //HAX ALERT: only send the first user in the list for now until we get multiple going
+        const result = await makeRequest(`${HOST}/transaction`, 'POST', {
+            to: value[0],
+            amount
+        });
+        const response = await result.json();
 
         // Call this on successful post
         this.setState({ sending: false, value: '', amount: DEFAULT_AMOUNT });
         notification.open({
-            message: `${amount} ezyBucks sent!`
+            message: `${amount} ezyBucks sent to ${response.to.username}`
         });
     };
 
