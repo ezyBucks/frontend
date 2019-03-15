@@ -7,11 +7,15 @@ import { IndexView } from './Components/Views/Index/IndexView';
 import { Header } from './Components/Common/Header';
 import { PrivateRoute } from './Components/Common/PrivateRoute';
 import { createStore } from 'redux';
-import MainReducer from './Redux/authenticate/reducers';
+import MainReducer from './store/rootReducer';
 import { Provider, connect } from 'react-redux';
-import { AuthenticatedState } from './Redux/authenticate/types';
+import { AuthenticatedState } from './store/authenticate/types';
 
-const store = createStore(MainReducer);
+const store = createStore(
+    MainReducer,
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+        (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 const privateRoute = () => {
     return <div>This is a private route</div>;

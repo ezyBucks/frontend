@@ -4,9 +4,10 @@ import { makeRequest } from '../../../lib/fetch';
 import { HOST } from '../../../lib/constants';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { setAuthenticated } from '../../../Redux/authenticate/actions';
+import { setAuthenticated } from '../../../store/authenticate/actions';
 import { Dispatch } from 'redux';
-import { AuthenticatedState } from '../../../Redux/authenticate/types';
+import { AuthenticatedState } from '../../../store/authenticate/types';
+import { AppState } from '../../../store/rootReducer';
 
 interface LoginContainerProps {
     authenticated: boolean;
@@ -91,9 +92,9 @@ export class LoginContainer extends React.Component<
  * Map the redux store to the containers props
  * @param state Store for the authentication
  */
-const mapStateToProps = (state: AuthenticatedState) => {
+const mapStateToProps = (state: AppState) => {
     return {
-        authenticated: state.authenticated
+        authenticated: state.authenticate.authenticated
     };
 };
 

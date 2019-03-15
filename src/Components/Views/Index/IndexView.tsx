@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LeftHalf, RightHalf, ContainerDiv } from '../../Common/Styles';
 import { ProfileContainer } from '../Profile/ProfileContainer';
-import { TransactionContainer } from '../Profile/Transaction/TransactionContainer';
+import TransactionContainer from '../Profile/Transaction/TransactionContainer';
 
 /**
  * Class to display the main landing page when not logged in.

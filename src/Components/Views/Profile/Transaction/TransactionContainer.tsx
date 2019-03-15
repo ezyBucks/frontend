@@ -2,9 +2,12 @@ import React from 'react';
 import TransactionView from './TransactionView';
 import { User } from '../../../../types/User';
 import { wait } from '../../../Common/Mock';
-import { notification } from 'antd';
+import { notification, Button } from 'antd';
 import { makeRequest } from '../../../../lib/fetch';
 import { HOST } from '../../../../lib/constants';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { setBalance } from '../../../../store/user/actions';
 
 /** Default minimum ezybucks amount to send */
 export const DEFAULT_AMOUNT = 1;
@@ -52,6 +55,7 @@ export class TransactionContainer extends React.Component<
      */
     async getUsersFromAPI(text?: string): Promise<User[]> {
         let result = await makeRequest(`${HOST}/user`);
+        console.log('the request was made');
         if (result.status != 200) {
             throw new Error('' + result.status);
         }
@@ -166,7 +170,7 @@ export class TransactionContainer extends React.Component<
         });
         const response = await result.json();
 
-        // Call this on successful post
+        // Call this on successful post to reset the component
         this.setState({ sending: false, value: '', amount: DEFAULT_AMOUNT });
         notification.open({
             message: `${amount} ezyBucks sent to ${response.to.username}`
@@ -199,3 +203,14 @@ export class TransactionContainer extends React.Component<
         );
     }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        setBalance: (value: number) => dispatch(setBalance(value))
+    };
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(TransactionContainer);
