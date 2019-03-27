@@ -3,10 +3,11 @@ import { RegisterView } from './RegisterView';
 import { makeRequest } from '../../../lib/fetch';
 import { HOST } from '../../../lib/constants';
 import { Redirect } from 'react-router';
-import { setAuthenticated } from '../../../Redux/authenticate/actions';
+import { setAuthenticated } from '../../../store/authenticate/actions';
 import { connect } from 'react-redux';
-import { AuthenticatedState } from '../../../Redux/authenticate/types';
+import { AuthenticatedState } from '../../../store/authenticate/types';
 import { Dispatch } from 'redux';
+import { AppState } from '../../../store/rootReducer';
 
 interface RegisterContainerProps {
     authenticated: boolean;
@@ -85,9 +86,9 @@ class RegisterContainer extends React.Component<
     }
 }
 
-const mapStateToProps = (state: AuthenticatedState) => {
+const mapStateToProps = (state: AppState) => {
     return {
-        authenticated: state.authenticated
+        authenticated: state.authenticate.authenticated
     };
 };
 
