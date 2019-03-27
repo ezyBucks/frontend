@@ -1,11 +1,15 @@
 import { combineReducers } from 'redux';
 import { BalanceAction, BALANCE } from './types';
 
-const defaultState = {
-    balance: 0
+interface BalanceState {
+    balance?: number;
+}
+
+const defaultState: BalanceState = {
+    balance: undefined
 };
 
-function balance(state = defaultState, action: BalanceAction) {
+function balance(state: BalanceState = defaultState, action: BalanceAction) {
     switch (action.type) {
         case BALANCE:
             return Object.assign({}, state, {

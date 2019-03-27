@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as Types from '../../../types/Types';
 import * as Constants from '../../../lib/constants';
-import {Avatar} from "antd";
-import {ContainerDiv} from "../../Common/Styles";
-import {BalanceContainer} from "../Balance/BalanceContainer";
+import { Avatar } from 'antd';
+import { ContainerDiv } from '../../Common/Styles';
+import BalanceContainer from '../Balance/BalanceContainer';
 
 interface ProfileViewProps {
     user: Types.User;
@@ -16,15 +16,13 @@ export const ProfileView: React.SFC<ProfileViewProps> = props => {
                 <UserAvatar initials={getInitials(props.user.username)} />
 
                 <span>
-                    <b style={{ fontSize: '20px' }}>
-                        {props.user.username}
-                    </b>
-                    <br/>
+                    <b style={{ fontSize: '20px' }}>{props.user.username}</b>
+                    <br />
                     {props.user.email}
                 </span>
 
                 <div style={{ marginTop: '50px' }}>
-                    <BalanceContainer userId={props.user.id} />
+                    <BalanceContainer />
                 </div>
             </div>
         </ContainerDiv>
@@ -37,12 +35,12 @@ export const ProfileView: React.SFC<ProfileViewProps> = props => {
 const UserAvatar: React.SFC<{ initials: string }> = props => {
     return (
         <Avatar
-            shape={"square"}
+            shape={'square'}
             size={64}
             style={{
                 float: 'left',
                 fontSize: '25px',
-                backgroundColor: Constants.ANTD_COLOUR,
+                backgroundColor: Constants.ANTD_COLOUR
             }}
         >
             <b>{props.initials}</b>
@@ -58,5 +56,7 @@ const UserAvatar: React.SFC<{ initials: string }> = props => {
  * @returns string
  */
 function getInitials(username: string): string {
-    return ["", ...username.split(" ")].reduce((initials, word) => initials + word[0]);
+    return ['', ...username.split(' ')].reduce(
+        (initials, word) => initials + word[0]
+    );
 }
