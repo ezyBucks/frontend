@@ -10,12 +10,28 @@ import { createStore } from 'redux';
 import MainReducer from './store/rootReducer';
 import { Provider, connect } from 'react-redux';
 import { AuthenticatedState } from './store/authenticate/types';
+// Add ignores because the typings for this package are broken
+// @ts-ignore
+import storage from 'redux-persist/lib/storage';
+// @ts-ignore
+import { persistStore, persistReducer } from 'redux-persist';
+// @ts-ignore
+import { PersistGate } from 'redux-persist/integration/react';
 
-const store = createStore(
-    MainReducer,
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['authenticate']
+};
+
+const persistedReducer = persistReducer(persistConfig, MainReducer);
+
+let store = createStore(
+    persistedReducer,
     (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
         (window as any).__REDUX_DEVTOOLS_EXTENSION__()
 );
+let persistor = persistStore(store);
 
 const privateRoute = () => {
     return <div>This is a private route</div>;
@@ -57,6 +73,8 @@ const MainApp = connect(mapStateToProps)(Main);
 
 export default () => (
     <Provider store={store}>
-        <MainApp />
+        <PersistGate loading={undefined} persistor={persistor}>
+            <MainApp />
+        </PersistGate>
     </Provider>
 );
