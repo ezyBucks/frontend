@@ -8,10 +8,13 @@ import { connect } from 'react-redux';
 import { AuthenticatedState } from '../../../store/authenticate/types';
 import { Dispatch } from 'redux';
 import { AppState } from '../../../store/rootReducer';
+import { User } from '../../../types/User';
+import { setUser } from '../../../store/user/actions';
 
 interface RegisterContainerProps {
     authenticated: boolean;
     setAuthenticated: typeof setAuthenticated;
+    setUser: typeof setUser;
 }
 
 interface RegisterContainerState {
@@ -69,6 +72,7 @@ class RegisterContainer extends React.Component<
 
         if (result.success) {
             this.props.setAuthenticated(true);
+            this.props.setUser(result.user);
         }
     }
 
@@ -94,7 +98,8 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value))
+        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value)),
+        setUser: (value: User) => dispatch(setUser(value)),
     };
 };
 

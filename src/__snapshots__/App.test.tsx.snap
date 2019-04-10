@@ -107,104 +107,44 @@ exports[`matches the snapshot 1`] = `
       className="css-337oej"
     >
       <div
-        className="css-dvxtzn"
-        style={
-          Object {
-            "marginTop": "30px",
-          }
-        }
+        className="ant-skeleton ant-skeleton-active"
       >
         <div
-          style={
-            Object {
-              "float": "left",
-              "width": "25%",
-            }
-          }
+          className="ant-skeleton-content"
         >
-          <span
-            className="ant-avatar ant-avatar-square"
+          <h3
+            className="ant-skeleton-title"
             style={
               Object {
-                "backgroundColor": "#1890ff",
-                "float": "left",
-                "fontSize": "25px",
-                "height": 64,
-                "lineHeight": "64px",
-                "width": 64,
+                "width": "38%",
               }
             }
+          />
+          <ul
+            className="ant-skeleton-paragraph"
           >
-            <span
-              className="ant-avatar-string"
-            >
-              <b>
-                RC
-              </b>
-            </span>
-          </span>
-          <span>
-            <b
+            <li
               style={
                 Object {
-                  "fontSize": "20px",
+                  "width": undefined,
                 }
               }
-            >
-              Robert Calvert
-            </b>
-            <br />
-            rcalvert@live.com
-          </span>
-          <div
-            style={
-              Object {
-                "marginTop": "50px",
+            />
+            <li
+              style={
+                Object {
+                  "width": undefined,
+                }
               }
-            }
-          >
-            <div
-              className="ant-skeleton ant-skeleton-active"
-            >
-              <div
-                className="ant-skeleton-content"
-              >
-                <h3
-                  className="ant-skeleton-title"
-                  style={
-                    Object {
-                      "width": "38%",
-                    }
-                  }
-                />
-                <ul
-                  className="ant-skeleton-paragraph"
-                >
-                  <li
-                    style={
-                      Object {
-                        "width": undefined,
-                      }
-                    }
-                  />
-                  <li
-                    style={
-                      Object {
-                        "width": undefined,
-                      }
-                    }
-                  />
-                  <li
-                    style={
-                      Object {
-                        "width": "61%",
-                      }
-                    }
-                  />
-                </ul>
-              </div>
-            </div>
-          </div>
+            />
+            <li
+              style={
+                Object {
+                  "width": "61%",
+                }
+              }
+            />
+          </ul>
         </div>
       </div>
     </div>

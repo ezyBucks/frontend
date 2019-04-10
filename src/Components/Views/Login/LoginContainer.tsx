@@ -6,12 +6,14 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { setAuthenticated } from '../../../store/authenticate/actions';
 import { Dispatch } from 'redux';
-import { AuthenticatedState } from '../../../store/authenticate/types';
 import { AppState } from '../../../store/rootReducer';
+import { User } from '../../../types/User';
+import { setUser } from '../../../store/user/actions';
 
 interface LoginContainerProps {
     authenticated: boolean;
     setAuthenticated: typeof setAuthenticated;
+    setUser: typeof setUser;
 }
 
 interface LoginContainerState {
@@ -58,7 +60,6 @@ export class LoginContainer extends React.Component<
      */
     private async handleLogin(e: React.SyntheticEvent<any>) {
         e.preventDefault();
-        console.log('POST to the api');
         console.log(this.state);
         const response = await makeRequest(
             `${HOST}/signin`,
@@ -71,6 +72,7 @@ export class LoginContainer extends React.Component<
 
         if (result.success) {
             this.props.setAuthenticated(true);
+            this.props.setUser(result.user);
         }
     }
 
@@ -104,7 +106,8 @@ const mapStateToProps = (state: AppState) => {
  */
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value))
+        setAuthenticated: (value: boolean) => dispatch(setAuthenticated(value)),
+        setUser: (value: User) => dispatch(setUser(value)),
     };
 };
 

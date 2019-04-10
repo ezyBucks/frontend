@@ -1,19 +1,27 @@
-import { combineReducers } from 'redux';
-import { BalanceAction, BALANCE } from './types';
+import { BalanceAction, BALANCE, USER, UserAction } from './types';
+import { User } from '../../types/User';
 
-interface BalanceState {
+type UserActionType = BalanceAction | UserAction;
+
+interface UserState {
     balance?: number;
+    user?: User;
 }
 
-const defaultState: BalanceState = {
-    balance: undefined
+const defaultState: UserState = {
+    balance: undefined,
+    user: undefined
 };
 
-function balance(state: BalanceState = defaultState, action: BalanceAction) {
+function balance(state: UserState = defaultState, action: UserActionType) {
     switch (action.type) {
         case BALANCE:
             return Object.assign({}, state, {
                 balance: action.balance
+            });
+        case USER:
+            return Object.assign({}, state, {
+                user: action.user
             });
         default:
             return state;
