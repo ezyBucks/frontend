@@ -8,6 +8,7 @@ import { HOST } from '../../../../lib/constants';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { setBalance } from '../../../../store/user/actions';
+import { AppState } from '../../../../store/rootReducer';
 
 /** Default minimum ezybucks amount to send */
 export const DEFAULT_AMOUNT = 1;
@@ -18,6 +19,10 @@ export const DEFAULT_AMOUNT = 1;
 export interface UserSelect extends User {
     value: string; // The user id
     text: string; // The user name
+}
+
+interface TransactionContainerProps {
+    user?: User;
 }
 
 interface TransactionContainerState {
@@ -32,10 +37,10 @@ interface TransactionContainerState {
  * Class to contain the new transaction selector
  */
 export class TransactionContainer extends React.Component<
-    {},
+    TransactionContainerProps,
     TransactionContainerState
 > {
-    constructor(props: {}) {
+    constructor(props: TransactionContainerProps) {
         super(props);
 
         this.state = {
@@ -45,31 +50,25 @@ export class TransactionContainer extends React.Component<
             sending: false,
             amount: DEFAULT_AMOUNT
         };
+
+        this.getUsersFromAPI = this.getUsersFromAPI.bind(this);
     }
 
     /**
      * Fetch the users from the api based on a search string.
-     * Currently returning all users with one dummy entry
+     * Currently returning all users 
      * @param text The text query to send to the api
      * @returns Promise with the array of Users returned from the api
      */
     async getUsersFromAPI(text?: string): Promise<User[]> {
         let result = await makeRequest(`${HOST}/user`);
-        console.log('the request was made');
         if (result.status != 200) {
             throw new Error('' + result.status);
         }
         let content = await result.json();
-        return [
-            {
-                id: 1,
-                username: 'robert',
-                email: 'robert.calvert@ezyvet.com',
-                password: 'this shouldnt be a property lol',
-                verified: true
-            },
-            ...content.items
-        ];
+        return content.items.filter(
+            (u: User) => this.props.user && u.id !== this.props.user.id
+        );
     }
 
     /**
@@ -204,6 +203,12 @@ export class TransactionContainer extends React.Component<
     }
 }
 
+const mapStateToProps = (state: AppState) => {
+    return {
+        user: state.user.user
+    };
+};
+
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         setBalance: (value: number) => dispatch(setBalance(value))
@@ -211,6 +216,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(TransactionContainer);

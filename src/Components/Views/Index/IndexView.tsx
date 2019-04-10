@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { LeftHalf, RightHalf, ContainerDiv } from '../../Common/Styles';
-import { ProfileContainer } from '../Profile/ProfileContainer';
+import ProfileContainer from '../Profile/ProfileContainer';
 import TransactionContainer from '../Profile/Transaction/TransactionContainer';
 
 /**
