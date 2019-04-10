@@ -23,18 +23,13 @@ export class BalanceContainer extends React.Component<
     }
 
     public async componentDidMount() {
-        // Fetch from the api here. Change the endpoint when balances is working
-        let result;
         try {
-            const response = await makeRequest(`${HOST}/user`);
-            result = await response.json();
+            const response = await makeRequest(`${HOST}/balance`);
+            const result = await response.json();
+            this.props.setBalance(result.total);
         } catch (e) {
             console.error('Error fetching user balance', e);
         }
-
-        // Mock this until we have a working balance endpoint
-        await wait(1500);
-        this.props.setBalance(Math.floor(Math.random() * Math.floor(10)));
     }
 
     public render() {
